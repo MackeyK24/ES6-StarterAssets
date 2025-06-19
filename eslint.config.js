@@ -20,7 +20,11 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       "no-var": "off",
+      "no-empty": "off",
       'no-unused-vars': 'off',
+      'prefer-const': 'off',
+      "@typescript-eslint/no-unsafe-function-type": "off",
+      '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-explicit-any': 'off',      

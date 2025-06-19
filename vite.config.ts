@@ -9,8 +9,8 @@ export default defineConfig({
         'top-level-await': true //browsers can handle top-level-await features
     },
     treeShaking: true,
-    minifyIdentifiers: true,
     minifySyntax: true,
+    minifyIdentifiers: true,
     minifyWhitespace: true,
   },
   base: "./", // Ensures assets are correctly referenced
@@ -24,7 +24,7 @@ export default defineConfig({
       output: {
         entryFileNames: "[name].js",
         assetFileNames: "[name].[ext]",
-        inlineDynamicImports: false,
+        inlineDynamicImports: true,
       },
       plugins: [
         {
@@ -61,18 +61,14 @@ export default defineConfig({
     exclude: ['@babylonjs/havok'],
     include: [
       '@babylonjs/core',
-      '@babylonjs/materials',
       '@babylonjs/gui',
+      '@babylonjs/materials',
       '@babylonjs/inspector',
-      'babylon-toolkit-next',
+      '@babylonjs-toolkit/next',
     ],
     esbuildOptions: {
       treeShaking: true,
     }
-  },
-  define: {
-    // Babylon.js build optimizations
-    'process.env.NODE_ENV': '"production"',
   },
   plugins: [
     react(),

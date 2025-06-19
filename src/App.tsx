@@ -7,11 +7,15 @@ import { Tools } from "@babylonjs/core/Misc/tools";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 import HavokPhysics from "@babylonjs/havok";
-import TOOLKIT from 'babylon-toolkit-next';
 import Viewer from './Viewer';
 import './App.css';
 
-// Required side-effects for the starter content
+//import TOOLKIT from "@babylonjs-toolkit/next";
+import * as TOOLKIT from '@babylonjs-toolkit/next';
+//import { SceneManager } from "@babylonjs-toolkit/next/core/component/scenemanager";
+
+// Required starter content side-effects
+// import "@babylonjs/inspector";
 import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 
 function App() {
@@ -20,14 +24,17 @@ function App() {
     const engine = scene.getEngine();
     const canvas = scene.getEngine().getRenderingCanvas();
     const cleanup = () => {
-      if (globalThis["HKP"]) {
-        delete globalThis["HKP"];
-      }
-      if (globalThis["HK"]) {
-        delete globalThis["HK"];
-      }
+      if (globalThis["HKP"]) delete globalThis["HKP"];
+      if (globalThis["HK"]) delete globalThis["HK"];
     };
     scene.onDisposeObservable.add(cleanup);
+
+    // This is for scene level debugging purposes
+    globalThis.scene = scene;
+    globalThis.engine = engine;
+    globalThis.canvas = canvas;
+
+    console.warn("Babylon Toolkit Next - Starter Assets Sample: " + TOOLKIT.SceneManager.Version);
 
     // This creates and positions a debug camera (non-mesh)
     const camera = new FreeCamera("camera1", new Vector3(0, 5, -10), scene);
@@ -47,6 +54,15 @@ function App() {
     globalThis.HK = await HavokPhysics();
     globalThis.HKP = new HavokPlugin(false);
     scene.enablePhysics(new Vector3(0,-9.81,0), globalThis.HKP);
+
+    // Our built-in 'sphere' shape. Params: name, options, scene
+    // var sphere = MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 32}, scene);
+
+    // Move the sphere upward 1/2 its height
+    // sphere.position.y = 1;
+
+    // Our built-in 'ground' shape. Params: name, options, scene
+    // var ground = MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // This loads the sample scene & player armature exported from the unity starter assets project
