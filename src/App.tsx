@@ -10,13 +10,12 @@ import HavokPhysics from "@babylonjs/havok";
 import Viewer from './Viewer';
 import './App.css';
 
-//import TOOLKIT from "@babylonjs-toolkit/next";
-import * as TOOLKIT from '@babylonjs-toolkit/next';
-//import { SceneManager } from "@babylonjs-toolkit/next/core/component/scenemanager";
-
-// Required starter content side-effects
-// import "@babylonjs/inspector";
+// Babylon Side-Effects
+import "@babylonjs/inspector";
 import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
+
+// Babylon Toolkit Next
+import { SceneManager } from "@babylonjs-toolkit/next";
 
 function App() {
   const onSceneReady = async (scene:Scene) => {
@@ -34,8 +33,6 @@ function App() {
     globalThis.engine = engine;
     globalThis.canvas = canvas;
 
-    console.warn("Babylon Toolkit Next - Starter Assets Sample: " + TOOLKIT.SceneManager.Version);
-
     // This creates and positions a debug camera (non-mesh)
     const camera = new FreeCamera("camera1", new Vector3(0, 5, -10), scene);
     camera.setTarget(Vector3.Zero());
@@ -47,7 +44,7 @@ function App() {
     light.intensity = 0.8;
 
     // This initializes the runtime library (non-mesh)
-    await TOOLKIT.SceneManager.InitializeRuntime(engine, { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false, loadProjectScriptBundle: false });
+    await SceneManager.InitializeRuntime(engine, { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false, loadProjectScriptBundle: false });
 
     // Initialize fresh physics for this scene
     // @ts-ignore
@@ -55,24 +52,15 @@ function App() {
     globalThis.HKP = new HavokPlugin(false);
     scene.enablePhysics(new Vector3(0,-9.81,0), globalThis.HKP);
 
-    // Our built-in 'sphere' shape. Params: name, options, scene
-    // var sphere = MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 32}, scene);
-
-    // Move the sphere upward 1/2 its height
-    // sphere.position.y = 1;
-
-    // Our built-in 'ground' shape. Params: name, options, scene
-    // var ground = MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // This loads the sample scene & player armature exported from the unity starter assets project
     // https://assetstore.unity.com/packages/essentials/starter-assets-character-controllers-urp-267961
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const assetsManager = new AssetsManager(scene);
-    assetsManager.addMeshTask("samplescene", null, TOOLKIT.SceneManager.PlaygroundRepo, "samplescene.gz.gltf");
-    assetsManager.addMeshTask("playerarmature", null, TOOLKIT.SceneManager.PlaygroundRepo, "playerarmature.gz.gltf");
-    await TOOLKIT.SceneManager.LoadRuntimeAssets(assetsManager, ["samplescene.gz.gltf","playerarmature.gz.gltf"], ()=> {
+    assetsManager.addMeshTask("samplescene", null, SceneManager.PlaygroundRepo, "samplescene.gz.gltf");
+    assetsManager.addMeshTask("playerarmature", null, SceneManager.PlaygroundRepo, "playerarmature.gz.gltf");
+    await SceneManager.LoadRuntimeAssets(assetsManager, ["samplescene.gz.gltf","playerarmature.gz.gltf"], ()=> {
       // This get the player armature transform node from scene hierarchy
       const player = scene.getNodeByName("PlayerArmature") as TransformNode;
       Tools.Log("Attaching player controller...");
@@ -86,11 +74,11 @@ function App() {
       // controller.moveSpeed = 5.335;
       // controller.walkSpeed = 2.0;
       // controller.jumpSpeed = 12.0;
-      // TOOLKIT.SceneManager.AttachScriptComponent(controller, "PROJECT.ThirdPersonPlayerController");
+      // SceneManager.AttachScriptComponent(controller, "PROJECT.ThirdPersonPlayerController");
 
       // This finally hides the screen loader
-      TOOLKIT.SceneManager.HideLoadingScreen(engine);
-      TOOLKIT.SceneManager.FocusRenderCanvas(scene);
+      SceneManager.HideLoadingScreen(engine);
+      SceneManager.FocusRenderCanvas(scene);
     });
   };
 
