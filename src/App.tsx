@@ -28,11 +28,6 @@ function App() {
     };
     scene.onDisposeObservable.add(cleanup);
 
-    // This is for scene level debugging purposes
-    globalThis.scene = scene;
-    globalThis.engine = engine;
-    globalThis.canvas = canvas;
-
     // This creates and positions a debug camera (non-mesh)
     const camera = new FreeCamera("camera1", new Vector3(0, 5, -10), scene);
     camera.setTarget(Vector3.Zero());
@@ -43,8 +38,10 @@ function App() {
     const light = new HemisphericLight("light1", new Vector3(0, 1, 0), scene);
     light.intensity = 0.8;
 
-    // This initializes the runtime library (non-mesh)
-    await SceneManager.InitializeRuntime(engine, { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false, loadProjectScriptBundle: false });
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // STEP 1 - Initializes the runtime library global scene properties
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    await SceneManager.InitializeRuntime(engine, { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false });
 
     // Initialize fresh physics for this scene
     // @ts-ignore
@@ -52,16 +49,22 @@ function App() {
     globalThis.HKP = new HavokPlugin(false);
     scene.enablePhysics(new Vector3(0,-9.81,0), globalThis.HKP);
 
+    // This is for scene level debugging purposes
+    globalThis.scene = scene;
+    globalThis.engine = engine;
+    globalThis.canvas = canvas;
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // This loads the sample scene & player armature exported from the unity starter assets project
+    // STEP 2 - Loads the sample scene & player armature exported from the unity starter assets project
     // https://assetstore.unity.com/packages/essentials/starter-assets-character-controllers-urp-267961
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
     const assetsManager = new AssetsManager(scene);
     assetsManager.addMeshTask("samplescene", null, SceneManager.PlaygroundRepo, "samplescene.gz.gltf");
     assetsManager.addMeshTask("playerarmature", null, SceneManager.PlaygroundRepo, "playerarmature.gz.gltf");
     await SceneManager.LoadRuntimeAssets(assetsManager, ["samplescene.gz.gltf","playerarmature.gz.gltf"], ()=> {
-      // This get the player armature transform node from scene hierarchy
+      /////////////////////////////////////////////////////////////////////////////////////////////////////
+      // STEP 3 - Attach the player controller to the player armature
+      /////////////////////////////////////////////////////////////////////////////////////////////////////
       const player = scene.getNodeByName("PlayerArmature") as TransformNode;
       Tools.Log("Attaching player controller...");
 
