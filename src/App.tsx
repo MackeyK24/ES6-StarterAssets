@@ -67,21 +67,28 @@ function App() {
       /////////////////////////////////////////////////////////////////////////////////////////////////////
       const player = scene.getNodeByName("PlayerArmature") as TransformNode;
       Tools.Log("Attaching player controller...");
-
-      // This instantiates a third person player controller script component from the babylon toolkit starter content package
-      // @ts-ignore
-      // const controller = new PROJECT.ThirdPersonPlayerController(player, scene, { arrowKeyRotation: true, smoothMotionSpeed:true, smoothChangeRate: 25.0 });
-      // controller.enableInput = true;
-      // controller.attachCamera = true;
-      // controller.boomPosition.set(0, 0, -5);
-      // controller.moveSpeed = 5.335;
-      // controller.walkSpeed = 2.0;
-      // controller.jumpSpeed = 12.0;
-      // SceneManager.AttachScriptComponent(controller, "PROJECT.ThirdPersonPlayerController");
-
-      // This finally hides the screen loader
-      SceneManager.HideLoadingScreen(engine);
-      SceneManager.FocusRenderCanvas(scene);
+      try
+      {
+        // This instantiates a third person player controller script component from the babylon toolkit starter content package
+        // @ts-ignore
+        // const controller = new PROJECT.ThirdPersonPlayerController(player, scene, { arrowKeyRotation: true, smoothMotionSpeed:true, smoothChangeRate: 25.0 });
+        // controller.enableInput = true;
+        // controller.attachCamera = true;
+        // controller.boomPosition.set(0, 0, -5);
+        // controller.moveSpeed = 5.335;
+        // controller.walkSpeed = 2.0;
+        // controller.jumpSpeed = 12.0;
+        // SceneManager.AttachScriptComponent(controller, "PROJECT.ThirdPersonPlayerController");
+      }
+      catch (e)
+      {
+        console.error("Failed to attach player controller", e);
+      } 
+      finally
+      {
+        SceneManager.HideLoadingScreen(engine);
+        SceneManager.FocusRenderCanvas(scene);
+      }
     });
   };
 
