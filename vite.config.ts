@@ -35,7 +35,10 @@ export default defineConfig({
     },
     fs: {
       allow: [".."]
-    }
+    },
+    middlewareMode: false,
+    open: true, // Automatically open the browser
+    port: 3001, // Default port for the development server
   },
   optimizeDeps: {
     exclude: ["@babylonjs/havok"],
@@ -68,6 +71,41 @@ export default defineConfig({
         server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
           if (req.originalUrl && req.originalUrl.endsWith(".wasm")) {
             res.setHeader("Content-Type", "application/wasm");
+          }
+          next();
+        });
+      }
+    },
+    {
+      name: "gzip-response-headers",
+      configureServer(server) {
+        server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
+          if (req.originalUrl && req.originalUrl.includes(".gz.")) {
+            res.setHeader("Content-Encoding", "gzip");
+          }
+          next();
+        });
+      }
+    },
+    {
+      name: "gltf-content-type-plugin",
+      configureServer(server) {
+        server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
+          if (req.originalUrl) {
+            if (req.originalUrl.endsWith(".gltf")) {
+              res.setHeader("Content-Type", "model/gltf+json");
+              res.setHeader("Access-Control-Allow-Origin", "*");
+              res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+              res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            } else if (req.originalUrl.endsWith(".glb")) {
+              res.setHeader("Content-Type", "model/gltf-binary");
+              res.setHeader("Access-Control-Allow-Origin", "*");
+              res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+              res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            } else if (req.originalUrl.endsWith(".bin")) {
+              res.setHeader("Content-Type", "application/octet-stream");
+              res.setHeader("Access-Control-Allow-Origin", "*");
+            }
           }
           next();
         });

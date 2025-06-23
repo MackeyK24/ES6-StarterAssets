@@ -1,1 +1,0 @@
-This is a temporary starter content folder.
