@@ -63,11 +63,26 @@ export default defineConfig({
           res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
           next();
         });
+      },
+      configurePreviewServer: (server) => {
+        server.middlewares.use((_req, res, next) => {
+          res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+          res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+          next();
+        });
       }
     },
     {
       name: "wasm-content-type-plugin",
       configureServer(server) {
+        server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
+          if (req.originalUrl && req.originalUrl.endsWith(".wasm")) {
+            res.setHeader("Content-Type", "application/wasm");
+          }
+          next();
+        });
+      },
+      configurePreviewServer(server) {
         server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
           if (req.originalUrl && req.originalUrl.endsWith(".wasm")) {
             res.setHeader("Content-Type", "application/wasm");
@@ -85,11 +100,40 @@ export default defineConfig({
           }
           next();
         });
+      },
+      configurePreviewServer(server) {
+        server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
+          if (req.originalUrl && req.originalUrl.includes(".gz.")) {
+            res.setHeader("Content-Encoding", "gzip");
+          }
+          next();
+        });
       }
     },
     {
       name: "gltf-content-type-plugin",
       configureServer(server) {
+        server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
+          if (req.originalUrl) {
+            if (req.originalUrl.endsWith(".gltf")) {
+              res.setHeader("Content-Type", "model/gltf+json");
+              res.setHeader("Access-Control-Allow-Origin", "*");
+              res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+              res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            } else if (req.originalUrl.endsWith(".glb")) {
+              res.setHeader("Content-Type", "model/gltf-binary");
+              res.setHeader("Access-Control-Allow-Origin", "*");
+              res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+              res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+            } else if (req.originalUrl.endsWith(".bin")) {
+              res.setHeader("Content-Type", "application/octet-stream");
+              res.setHeader("Access-Control-Allow-Origin", "*");
+            }
+          }
+          next();
+        });
+      },
+      configurePreviewServer(server) {
         server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
           if (req.originalUrl) {
             if (req.originalUrl.endsWith(".gltf")) {
