@@ -17,6 +17,9 @@ import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 // Babylon Toolkit Next
 import { SceneManager } from "@babylonjs-toolkit/next";
 
+// Project Script Bundle
+// import "./unity/project-scripts/project-scripts.bundle.js"; // Uncomment if you have a project script bundle
+
 function App() {
   const onSceneReady = async (scene:Scene) => {
     // This configures the engine, scene and canvas references (non-mesh)
@@ -59,9 +62,9 @@ function App() {
     // https://assetstore.unity.com/packages/essentials/starter-assets-character-controllers-urp-267961
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     const assetsManager = new AssetsManager(scene);
-    assetsManager.addMeshTask("samplescene", null, SceneManager.PlaygroundRepo, "samplescene.gz.gltf");
-    assetsManager.addMeshTask("playerarmature", null, SceneManager.PlaygroundRepo, "playerarmature.gz.gltf");
-    await SceneManager.LoadRuntimeAssets(assetsManager, ["samplescene.gz.gltf","playerarmature.gz.gltf"], ()=> {
+    assetsManager.addMeshTask("samplescene", null, "/scenes/", "samplescene.gltf");
+    assetsManager.addMeshTask("playerarmature", null, "/scenes/", "playerarmature.gltf");
+    await SceneManager.LoadRuntimeAssets(assetsManager, ["samplescene.gltf","playerarmature.gltf"], ()=> {
       /////////////////////////////////////////////////////////////////////////////////////////////////////
       // STEP 3 - Attach the player controller to the player armature
       /////////////////////////////////////////////////////////////////////////////////////////////////////
