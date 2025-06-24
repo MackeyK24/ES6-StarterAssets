@@ -25,5 +25,5 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "unity/**/*.ts", "public/**/*.d.ts"]
+  "include": ["src/**/*", "unity/**/*.ts"]
 }

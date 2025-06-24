@@ -1,5 +1,5 @@
 {
-    "source": "../src",
+    "source": "../src/bundle",
     "deploy": "../public/scenes",
     "folder": null
 }
