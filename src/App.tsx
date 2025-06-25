@@ -18,7 +18,7 @@ import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
 import { SceneManager } from "@babylonjs-toolkit/next";
 
 // Project Script Bundle
-// import "./unity/project-scripts/project-scripts.bundle.js"; // Uncomment if you have a project script bundle
+// import "../unity/YourUnityFolder/Assets/[Import]/Project";
 
 function App() {
   const onSceneReady = async (scene:Scene) => {
