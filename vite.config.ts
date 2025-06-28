@@ -1,6 +1,6 @@
+import type { Connect } from "vite";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import type { Connect } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
