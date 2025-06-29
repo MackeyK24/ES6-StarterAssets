@@ -35,6 +35,9 @@ function Viewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasEle
           if (!canvas) return;
 
           if (navigator.gpu && webgpu) {
+              // const webGPUSupported = await WebGPUEngine.IsSupportedAsync;            
+              // You can decide which WebGPU extensions to load when creating the engine. I am loading all of them            
+              // await import("@babylonjs/core/Engines/WebGPU/Extensions/");            
               const webgpuEngine = new WebGPUEngine(canvas, {
                 ...engineOptions,
                 antialias,

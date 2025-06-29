@@ -16,7 +16,7 @@ function App() {
 
     // This creates ambient light, aiming 0,1,0 - to the sky (non-mesh)
     const light = new HemisphericLight("light1", new Vector3(0, 1, 0), scene);
-    light.intensity = 0.8;
+    light.intensity = 0.7;
 
     // This loads the demo starter assets scene
     await DemoScene.Load(scene);
