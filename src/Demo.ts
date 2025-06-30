@@ -7,11 +7,9 @@ import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 import HavokPhysics from "@babylonjs/havok";
 
-// Babylon Toolkit Next
+// Babylon Toolkit Imports
 import { SceneManager } from "@babylonjs-toolkit/next";
-
-// Project Script Bundle
-// import "../unity/YourUnityFolder/Assets/[Import]/Project";
+import { ThirdPersonPlayerController } from "@babylonjs-toolkit/dlc/ThirdPersonPlayerController";
 
 class DemoScene {
     public static async Load(scene:Scene, setHardwareScaling:boolean = true): Promise<void> {
@@ -51,12 +49,12 @@ class DemoScene {
             try {
                 const player = scene.getNodeByName("PlayerArmature") as TransformNode;
                 if (player != null) {
-                    // const controller = new ThirdPersonPlayerController(player, scene, { arrowKeyRotation: true, smoothMotionSpeed:true, smoothChangeRate: 25.0 });
-                    // controller.enableInput = true;
-                    // controller.attachCamera = true;
-                    // controller.moveSpeed = 5.335;
-                    // controller.walkSpeed = 2.0;
-                    // controller.jumpSpeed = 12.0;
+                    const controller = new ThirdPersonPlayerController(player, scene, { arrowKeyRotation: true, smoothMotionSpeed:true, smoothChangeRate: 25.0 });
+                    controller.enableInput = true;
+                    controller.attachCamera = true;
+                    controller.moveSpeed = 5.335;
+                    controller.walkSpeed = 2.0;
+                    controller.jumpSpeed = 12.0;
                 }
             } catch (e) {
                 console.error("Failed to attach player controller", e);
