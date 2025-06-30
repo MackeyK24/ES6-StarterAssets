@@ -17,8 +17,8 @@
     "@babylonjs/loaders": "^8.14.0",
     "@babylonjs/materials": "^8.14.0",
     "@babylonjs/inspector": "^8.14.0",
-    "@babylonjs-toolkit/next": "8.14.11",
-    "@babylonjs-toolkit/dlc": "8.14.11",
+    "@babylonjs-toolkit/next": "8.14.12",
+    "@babylonjs-toolkit/dlc": "8.14.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
