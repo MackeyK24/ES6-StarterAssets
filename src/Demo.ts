@@ -1,22 +1,23 @@
 import { Scene } from "@babylonjs/core/scene";
 import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
-import { Tools } from "@babylonjs/core/Misc/tools";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
-import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 import HavokPhysics from "@babylonjs/havok";
 import { SceneManager } from "@babylonjs-toolkit/next";
 import { ThirdPersonPlayerController } from "@babylonjs-toolkit/dlc/ThirdPersonPlayerController";
 
 class DemoScene {
-    public static async Load(scene:Scene, setHardwareScaling:boolean = true): Promise<void> {
+    public static async Load(scene:Scene): Promise<void> {
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        // STEP 1 - Initializes the engine scripts and global havok properties
+        // STEP 1 - Initializes the runtime and global scene properties
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        const engine:AbstractEngine = scene.getEngine();
-        if (setHardwareScaling === true) engine.setHardwareScalingLevel(1 / window.devicePixelRatio);
+        await SceneManager.InitializeRuntime(scene.getEngine(), { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false });
+        await import("@babylonjs-toolkit/dlc/DebugInformation");
+        await import("@babylonjs-toolkit/dlc/DefaultCameraSystem");
+        await import("@babylonjs-toolkit/dlc/MobileInputController");
+        if (import.meta.env.DEV) await import("@babylonjs/inspector");
         
         // @ts-ignore - This initializes fresh physics for this scene
         globalThis.HK = await HavokPhysics();
@@ -42,7 +43,6 @@ class DemoScene {
             /////////////////////////////////////////////////////////////////////////////////////////////////////
             // STEP 3 - Attach the player controller to the player armature
             /////////////////////////////////////////////////////////////////////////////////////////////////////
-            Tools.Log("Attaching player controller...");
             try {
                 const player = scene.getNodeByName("PlayerArmature") as TransformNode;
                 if (player != null) {
@@ -56,7 +56,7 @@ class DemoScene {
             } catch (e) {
                 console.error("Failed to attach player controller", e);
             } finally {
-                SceneManager.HideLoadingScreen(engine);
+                SceneManager.HideLoadingScreen(scene.getEngine());
                 SceneManager.FocusRenderCanvas(scene);
             }
         });
