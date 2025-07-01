@@ -6,8 +6,6 @@ import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 import HavokPhysics from "@babylonjs/havok";
-
-// Babylon Toolkit Imports
 import { SceneManager } from "@babylonjs-toolkit/next";
 import { ThirdPersonPlayerController } from "@babylonjs-toolkit/dlc/ThirdPersonPlayerController";
 
@@ -15,10 +13,9 @@ class DemoScene {
     public static async Load(scene:Scene, setHardwareScaling:boolean = true): Promise<void> {
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        // STEP 1 - Initializes the runtime library and global scene properties
+        // STEP 1 - Initializes the engine scripts and global havok properties
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         const engine:AbstractEngine = scene.getEngine();
-        await SceneManager.InitializeRuntime(engine, { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false });
         if (setHardwareScaling === true) engine.setHardwareScalingLevel(1 / window.devicePixelRatio);
         
         // @ts-ignore - This initializes fresh physics for this scene

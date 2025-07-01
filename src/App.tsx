@@ -5,9 +5,12 @@ import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
+import { SceneManager } from '@babylonjs-toolkit/next/scenemanager';
 
 function App() {
   const onSceneReady = async (scene:Scene) => {
+    // This initializes the Babylon Toolkit runtime (non-mesh)
+    await SceneManager.InitializeRuntime(scene.getEngine(), { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false });
 
     // This creates and positions a debug camera (non-mesh)
     const camera = new FreeCamera("camera1", new Vector3(0, 5, -10), scene);

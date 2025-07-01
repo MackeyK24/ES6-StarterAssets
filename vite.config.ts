@@ -3,16 +3,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  esbuild: {
-    supported: {
-        "top-level-await": true //browsers can handle top-level-await features
-    },
-    treeShaking: true,
-    minifySyntax: true,
-    minifyIdentifiers: true,
-    minifyWhitespace: true,
-  },
+export default defineConfig(({ mode }) => ({
   base: "./", // Ensures assets are correctly referenced
   build: {
     emptyOutDir: true,
@@ -28,6 +19,30 @@ export default defineConfig({
       }
     }
   },
+  esbuild: {
+    supported: {
+        "top-level-await": true
+    },
+    treeShaking: mode === 'production',
+    minifySyntax: mode === 'production', 
+    minifyIdentifiers: mode === 'production',
+    minifyWhitespace: mode === 'production',
+  },
+  optimizeDeps: {
+    exclude: mode === 'development' ? [
+      "@babylonjs/havok",
+      "@babylonjs/core",
+      "@babylonjs/loaders",
+      "@babylonjs/loaders/glTF",
+      "@babylonjs-toolkit/dlc"
+    ] : ["@babylonjs/havok"],
+    include: mode === 'development' ? [
+      "@babylonjs/gui", 
+      "@babylonjs/materials",
+      "@babylonjs/inspector",
+      "@babylonjs-toolkit/next"
+    ] : [],
+  },
   server: {
     headers: {
       "Cross-Origin-Embedder-Policy": "require-corp",
@@ -39,19 +54,6 @@ export default defineConfig({
     middlewareMode: false,
     open: true, // Automatically open the browser
     port: 3001, // Default port for the development server
-  },
-  optimizeDeps: {
-    exclude: ["@babylonjs/havok"],
-    include: [
-      "@babylonjs/core",
-      "@babylonjs/gui",
-      "@babylonjs/materials",
-      "@babylonjs/inspector",
-      "@babylonjs-toolkit/next",
-    ],
-    esbuildOptions: {
-      treeShaking: true,
-    }
   },
   plugins: [
     react(),
@@ -156,4 +158,4 @@ export default defineConfig({
       }
     }
   ]
-})
+}))
