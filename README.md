@@ -52,6 +52,28 @@ import * as TOOLKIT from "@babylonjs-toolkit/next";
 TOOLKIT.SceneManager.AutoStripNamespacePrefix = false;
 ```
 
+### Vite Configuration (ES6)
+
+The Vite bundle services behave differently in devmode than production. To preserve some required classes during devmode, these `exclude` and `include` settings are strongly recommended in your vite.config.js settings file.
+
+```json
+  optimizeDeps: {
+    exclude: mode === 'development' ? [
+      "@babylonjs/havok",
+      "@babylonjs/core",
+      "@babylonjs/loaders",
+      "@babylonjs/loaders/glTF",
+      "@babylonjs-toolkit/dlc"
+    ] : ["@babylonjs/havok"],
+    include: mode === 'development' ? [
+      "@babylonjs/gui", 
+      "@babylonjs/materials",
+      "@babylonjs/inspector",
+      "@babylonjs-toolkit/next"
+    ] : [],
+  }
+```
+
 # 🌳 Tree Shaking 
 
 The Babylon Toolkit ES6 library is optimized for maximum tree-shaking with **39 separate module files** containing **114 total declarations**. The build system intelligently groups related classes to handle circular dependencies while maintaining optimal bundle sizes.
@@ -76,7 +98,6 @@ import { SceneManager, ScriptComponent, InputController } from "@babylonjs-toolk
 ```typescript
 import { SceneManager } from "@babylonjs-toolkit/next/scenemanager";
 import { LocalMessageBus } from "@babylonjs-toolkit/next/localmessagebus";
-import { CharacterController } from "@babylonjs-toolkit/next/charactercontroller";
 ```
 - **Pros**: Explicit dependencies, maximum bundler hints
 - **Cons**: More verbose, requires knowledge of file structure
@@ -110,16 +131,15 @@ When bundle size is critical:
 ```typescript
 // Maximum tree-shaking for production
 import { SceneManager } from "@babylonjs-toolkit/next/scenemanager";
-import { CharacterController } from "@babylonjs-toolkit/next/charactercontroller";
+
+// Character Controllers
+import { CharacterController } from "@babylonjs-toolkit/next/scenemanager";
+import { SimpleCharacterController } from "@babylonjs-toolkit/next/scenemanager";
+import { RecastCharacterController } from "@babylonjs-toolkit/next/scenemanager";
 
 // Animation & Media Components
 import { ShurikenParticles } from "@babylonjs-toolkit/next/shurikenparticles";
 import { WebVideoPlayer } from "@babylonjs-toolkit/next/webvideoplayer";
-
-// Character Controllers
-import { CharacterController } from "@babylonjs-toolkit/next/charactercontroller";
-import { SimpleCharacterController } from "@babylonjs-toolkit/next/simplecharactercontroller";
-import { RecastCharacterController } from "@babylonjs-toolkit/next/recastcharactercontroller";
 
 // Terrain & Environment
 import { TerrainGenerator } from "@babylonjs-toolkit/next/terraingenerator";
