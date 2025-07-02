@@ -63,15 +63,15 @@ The Vite bundle services behave differently in devmode than production. To prese
       "@babylonjs/core",
       "@babylonjs/loaders",
       "@babylonjs/loaders/glTF",
-      "@babylonjs-toolkit/dlc"
     ] : ["@babylonjs/havok"],
     include: mode === 'development' ? [
       "@babylonjs/gui", 
       "@babylonjs/materials",
       "@babylonjs/inspector",
+      "@babylonjs-toolkit/dlc",
       "@babylonjs-toolkit/next"
     ] : [],
-  }
+  },
 ```
 
 # 🌳 Tree Shaking 
