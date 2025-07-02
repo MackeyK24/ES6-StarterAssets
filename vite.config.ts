@@ -34,12 +34,12 @@ export default defineConfig(({ mode }) => ({
       "@babylonjs/core",
       "@babylonjs/loaders",
       "@babylonjs/loaders/glTF",
-      "@babylonjs-toolkit/dlc"
     ] : ["@babylonjs/havok"],
     include: mode === 'development' ? [
       "@babylonjs/gui", 
       "@babylonjs/materials",
       "@babylonjs/inspector",
+      "@babylonjs-toolkit/dlc",
       "@babylonjs-toolkit/next"
     ] : [],
   },
