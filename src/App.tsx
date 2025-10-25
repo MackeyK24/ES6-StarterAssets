@@ -1,10 +1,11 @@
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
 import Viewer from "./Viewer";
 import DemoScene from "./Demo";
 import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
+import "./App.css";
 
 function App() {
   const onSceneReady = async (scene:Scene) => {
@@ -22,9 +23,13 @@ function App() {
   };
 
   return (    
-    <div className="root">
-      <Viewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onSceneReady={onSceneReady} className="canvas" />
-    </div>
+    <Routes>
+      <Route path="/" element={
+        <div className="root">
+          <Viewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onSceneReady={onSceneReady} className="canvas" />
+        </div>
+      } />
+    </Routes>
   );
 }
 
