@@ -12,15 +12,14 @@ import "./App.css";
 function App() {
   const onSceneReady = async (scene:Scene) => {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // STEP 1 - Initializes the runtime and global scene properties
+    // STEP 1 - Initialize the global runtime with the default camera and scene properties
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     const defaultCamera = new FreeCamera("defaultCamera", new Vector3(0, 5, -10), scene);
     defaultCamera.setTarget(Vector3.Zero());
     await GameManager.InitializeRuntime(scene, defaultCamera);
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // STEP 2 - The loads the sample scene & player armature exported from the unity starter assets project
-    // https://assetstore.unity.com/packages/essentials/starter-assets-character-controllers-urp-267961
+    // STEP 2 - Load the sample scene & player armature exported from the unity starter assets
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     const assetsManager = new AssetsManager(scene);
     assetsManager.addMeshTask("samplescene", null, "/scenes/", "samplescene.gltf");
@@ -28,7 +27,7 @@ function App() {
     await SceneManager.LoadRuntimeAssets(assetsManager, ["samplescene.gltf", "playerarmature.gltf"], ()=> {
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
-        // STEP 3 - Attach the player controller to the player armature
+        // STEP 3 - Attach the third person player controller to the player armature transform node
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         try {
             const player = scene.getNodeByName("PlayerArmature") as TransformNode;
