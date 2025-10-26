@@ -5,12 +5,13 @@ import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { SceneManager } from "@babylonjs-toolkit/next";
 import { ThirdPersonPlayerController } from "@babylonjs-toolkit/dlc/ThirdPersonPlayerController";
+import { useCallback } from "react";
 import GameManager from "./Global";
 import Viewer from "./Viewer";
 import "./App.css";
 
 function App() {
-  const onSceneReady = async (scene:Scene) => {
+  const onSceneReady = useCallback(async (scene:Scene) => {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // STEP 1 - Initialize the global runtime with the default camera and scene properties
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +47,7 @@ function App() {
             SceneManager.FocusRenderCanvas(scene);
         }
     });
-  };
+  }, []);
 
   return (    
     <div className="root">
