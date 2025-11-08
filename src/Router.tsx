@@ -20,7 +20,6 @@ export default function ProtectedRoute({ children, redirectTo = '/' }: Protected
   useEffect(() => {
     // If no state was passed (direct browser access), redirect
     if (!location.state || !location.state.fromApp) {
-      console.warn("SECURITY ALERT: Invalid route access. Redirecting to: ", redirectTo);
       navigate(redirectTo, { replace: true });
     }
   }, [location, navigate, redirectTo]);

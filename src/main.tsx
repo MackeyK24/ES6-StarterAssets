@@ -1,12 +1,13 @@
-import { MemoryRouter, Routes, Route } from "react-router-dom"
-import { createRoot } from "react-dom/client"
-import App from "./App"
-import "./index.css"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createRoot } from "react-dom/client";
+import ProtectedRoute from "./Router";
+import App from "./App";
+import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
-  <MemoryRouter>
+  <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
     </Routes>
-  </MemoryRouter>
+  </BrowserRouter>
 )
