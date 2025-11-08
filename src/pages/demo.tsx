@@ -7,9 +7,9 @@ import { SceneManager } from "@babylonjs-toolkit/next";
 import { ThirdPersonPlayerController } from "@babylonjs-toolkit/dlc/ThirdPersonPlayerController";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
-import GameManager from "./Global";
-import Viewer from "./Viewer";
-import "./App.css";
+import GameManager from "../global.ts";
+import Viewer from "../viewer.tsx";
+import "../app.css";
 
 function Demo() {
   const navigateTo = useNavigate();
