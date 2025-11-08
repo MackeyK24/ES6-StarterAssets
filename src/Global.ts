@@ -13,10 +13,17 @@ class GameManager {
         await import("@babylonjs-toolkit/dlc/MobileInputController");
         if (import.meta.env.DEV) await import("@babylonjs/inspector");
         
-        // @ts-ignore - This initializes fresh physics for this scene
-        globalThis.HK = await HavokPhysics();
-        globalThis.HKP = new HavokPlugin(false);
-        scene.enablePhysics(new Vector3(0,-9.81,0), globalThis.HKP);
+        if (globalThis.HK == null || globalThis.HKP == null)
+        {
+            // @ts-ignore - This initializes fresh physics for this scene
+            globalThis.HK = await HavokPhysics();
+            globalThis.HKP = new HavokPlugin(false);
+        }
+        
+        if (globalThis.HK != null && globalThis.HKP != null)
+        {
+            scene.enablePhysics(new Vector3(0,-9.81,0), globalThis.HKP);
+        }
 
         // This cleans up globals when the scene is disposed
         const cleanupGlobals = () => {
