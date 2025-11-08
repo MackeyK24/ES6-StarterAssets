@@ -5,13 +5,15 @@ import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { SceneManager } from "@babylonjs-toolkit/next";
 import { ThirdPersonPlayerController } from "@babylonjs-toolkit/dlc/ThirdPersonPlayerController";
+import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import GameManager from "./Global";
 import Viewer from "./Viewer";
 import "./App.css";
 
 function App() {
-  const onSceneReady = useCallback(async (scene:Scene) => {
+  const navigateTo = useNavigate();
+  const createScene = useCallback(async (scene:Scene) => {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // STEP 1 - Initialize the global runtime with the default camera and scene properties
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +27,7 @@ function App() {
     const assetsManager = new AssetsManager(scene);
     assetsManager.addMeshTask("samplescene", null, "/scenes/", "samplescene.gltf");
     assetsManager.addMeshTask("playerarmature", null, "/scenes/", "playerarmature.gltf");
-    await SceneManager.LoadRuntimeAssets(assetsManager, ["samplescene.gltf", "playerarmature.gltf"], ()=> {
+    await SceneManager.LoadRuntimeAssets(assetsManager, ["samplescene.gltf", "playerarmature.gltf"], async ()=> {
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         // STEP 3 - Attach the third person player controller to the player armature transform node
@@ -47,11 +49,11 @@ function App() {
             SceneManager.FocusRenderCanvas(scene);
         }
     });
-  }, []);
+  }, [navigateTo]);
 
   return (    
     <div className="root">
-      <Viewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onSceneReady={onSceneReady} className="canvas" />
+      <Viewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
     </div>
   );
 }

@@ -12,7 +12,7 @@ export declare type BabylonjsProps = {
   adaptToDeviceRatio?: boolean;
   renderChildrenWhenReady?: boolean;
   sceneOptions?: any;
-  onSceneReady: (scene: Scene) => void;
+  onCreateScene: (scene: Scene) => void;
   /**
    * Automatically trigger engine resize when the canvas resizes (default: true)
    */
@@ -22,7 +22,7 @@ export declare type BabylonjsProps = {
 };
 
 function Viewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
-  const { webgpu, antialias, engineOptions = {}, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady, ...rest } = props;
+  const { webgpu, antialias, engineOptions = {}, adaptToDeviceRatio, sceneOptions, onRender, onCreateScene, ...rest } = props;
   const reactCanvas = useRef(null);
 
   useEffect(() => {
@@ -53,9 +53,9 @@ function Viewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasEle
 
           scene = new Scene(engine, sceneOptions);
           if (scene.isReady()) {
-              onSceneReady(scene);
+              onCreateScene(scene);
           } else {
-              scene.onReadyObservable.addOnce((scene) => onSceneReady(scene));
+              scene.onReadyObservable.addOnce((scene) => onCreateScene(scene));
           }
 
           engine.runRenderLoop(() => {
@@ -101,7 +101,7 @@ function Viewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasEle
               engine = null as any;
           }
       };
-  }, [webgpu, antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onSceneReady]);
+  }, [webgpu, antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onCreateScene]);
 
   return <canvas ref={reactCanvas} {...rest} />;
 }
