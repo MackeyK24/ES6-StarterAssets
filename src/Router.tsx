@@ -6,6 +6,13 @@ interface ProtectedRouteProps {
   redirectTo?: string;
 }
 
+/**
+ * To properly access protected routes, the user must navigate from within the app.
+ * If they try to access it directly (e.g., via browser URL), they will be redirected.
+ * The navigation within the app should set location state { fromApp: true }.
+ * Example: navigate('/demo', { state: { fromApp: true } });
+ */
+
 export default function ProtectedRoute({ children, redirectTo = '/' }: ProtectedRouteProps) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,6 +20,7 @@ export default function ProtectedRoute({ children, redirectTo = '/' }: Protected
   useEffect(() => {
     // If no state was passed (direct browser access), redirect
     if (!location.state || !location.state.fromApp) {
+      console.warn("SECURITY ALERT: Invalid route access. Redirecting to: ", redirectTo);
       navigate(redirectTo, { replace: true });
     }
   }, [location, navigate, redirectTo]);
