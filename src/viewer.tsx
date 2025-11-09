@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
 import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { EngineStore } from "@babylonjs/core/Engines/engineStore";
@@ -21,7 +23,7 @@ export declare type BabylonjsProps = {
   children?: React.ReactNode;
 };
 
-function Viewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
+function SceneViewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const { webgpu, antialias, engineOptions = {}, adaptToDeviceRatio, sceneOptions, onRender, onCreateScene, ...rest } = props;
   const reactCanvas = useRef(null);
 
@@ -51,7 +53,12 @@ function Viewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasEle
               engine = new Engine(canvas, antialias, engineOptions, adaptToDeviceRatio);
           }
 
+          // Create new scene with default camera
           scene = new Scene(engine, sceneOptions);
+          const defaultCamera = new FreeCamera("defaultCamera", new Vector3(0, 5, -10), scene);
+          defaultCamera.setTarget(Vector3.Zero());
+          scene.activeCamera = defaultCamera;
+
           if (scene.isReady()) {
               onCreateScene(scene);
           } else {
@@ -106,4 +113,4 @@ function Viewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasEle
   return <canvas ref={reactCanvas} {...rest} />;
 }
 
-export default Viewer;
+export default SceneViewer;

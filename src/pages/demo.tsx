@@ -8,18 +8,16 @@ import { ThirdPersonPlayerController } from "@babylonjs-toolkit/dlc/ThirdPersonP
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import GameManager from "../global.ts";
-import Viewer from "../viewer.tsx";
+import SceneViewer from "../viewer.tsx";
 import "../app.css";
 
 function Demo() {
   const navigateTo = useNavigate();
   const createScene = useCallback(async (scene:Scene) => {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // STEP 1 - Initialize the global runtime with the default camera and scene properties
+    // STEP 1 - Initialize the global runtime scene properties and the default camera system
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    const defaultCamera = new FreeCamera("defaultCamera", new Vector3(0, 5, -10), scene);
-    defaultCamera.setTarget(Vector3.Zero());
-    await GameManager.InitializeRuntime(scene, defaultCamera);
+    await GameManager.InitializeRuntime(scene);
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     // STEP 2 - Load the sample scene & player armature exported from the unity starter assets
@@ -53,7 +51,7 @@ function Demo() {
 
   return (    
     <div className="root">
-      <Viewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
+      <SceneViewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
     </div>
   );
 }

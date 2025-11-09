@@ -6,7 +6,7 @@ import HavokPhysics from "@babylonjs/havok";
 import { SceneManager } from "@babylonjs-toolkit/next";
 
 class GameManager {
-    public static async InitializeRuntime(scene:Scene, defaultCamera: FreeCamera): Promise<void> {
+    public static async InitializeRuntime(scene:Scene): Promise<void> {
         await SceneManager.InitializeRuntime(scene.getEngine(), { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false });
         await import("@babylonjs-toolkit/dlc/DebugInformation");
         await import("@babylonjs-toolkit/dlc/DefaultCameraSystem");
