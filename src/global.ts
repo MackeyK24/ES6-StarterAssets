@@ -7,7 +7,7 @@ import { SceneManager } from "@babylonjs-toolkit/next";
 
 class GameManager {
     public static get IsDevelopmentMode(): boolean { return import.meta.env.DEV; }
-    public static async InitializeRuntime(scene:Scene, navigateToFunction:any = null, showLoadingScreen:boolean = true, hideEngineLoadingUI:boolean = false): Promise<void> {
+    public static async InitializeRuntime(scene:Scene, navigateToFunction:any = null, enablePhysics:boolean = true, showLoadingScreen:boolean = true, hideEngineLoadingUI:boolean = false): Promise<void> {
         if (scene.isDisposed) return; // Note: Strict mode safety
         await SceneManager.InitializeRuntime(scene.getEngine(), { showDefaultLoadingScreen: showLoadingScreen, hideLoadingUIWithEngine: hideEngineLoadingUI });
         await import("@babylonjs-toolkit/dlc/DebugInformation");
@@ -20,28 +20,31 @@ class GameManager {
         (scene as any).reactNavigationFunction = navigateToFunction;
 
         // Havok is only loaded once globally AFTER SceneManager.InitializeRuntime
-        if (globalThis.HK == null || globalThis.HKP == null)
+        if (enablePhysics)
         {
-            // @ts-ignore - This initializes fresh physics for this scene
-            globalThis.HK = await HavokPhysics();
-            globalThis.HKP = new HavokPlugin(false);
-        }
-        if (!scene.isDisposed && globalThis.HK != null && globalThis.HKP != null)
-        {
-            scene.enablePhysics(new Vector3(0,-9.81,0), globalThis.HKP);
-        }
-        const cleanupGlobals = () =>
-        {
-            if (globalThis["HKP"]) delete globalThis["HKP"];
-            if (globalThis["HK"]) delete globalThis["HK"];
-        };
-        if (!scene.isDisposed)
-        {
-            scene.onDisposeObservable.addOnce(cleanupGlobals);
-        }
-        else
-        {
-            cleanupGlobals();
+            if (globalThis.HK == null || globalThis.HKP == null)
+            {
+                // @ts-ignore - This initializes fresh physics for this scene
+                globalThis.HK = await HavokPhysics();
+                globalThis.HKP = new HavokPlugin(false);
+            }
+            if (!scene.isDisposed && globalThis.HK != null && globalThis.HKP != null)
+            {
+                scene.enablePhysics(new Vector3(0,-9.81,0), globalThis.HKP);
+            }
+            const cleanupGlobals = () =>
+            {
+                if (globalThis["HKP"]) delete globalThis["HKP"];
+                if (globalThis["HK"]) delete globalThis["HK"];
+            };
+            if (!scene.isDisposed)
+            {
+                scene.onDisposeObservable.addOnce(cleanupGlobals);
+            }
+            else
+            {
+                cleanupGlobals(); // Note: Force clean up if scene was disposed already
+            }
         }
     }
 }

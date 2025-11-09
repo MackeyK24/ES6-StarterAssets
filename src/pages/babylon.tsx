@@ -24,7 +24,7 @@ function Babylon() {
     // STEP 1 - Initialize the global runtime scene properties and react navigation system
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     try {
-      await GameManager.InitializeRuntime(scene, navigateTo, true, false);
+      await GameManager.InitializeRuntime(scene, navigateTo, true, true, false);
       if (disposed || scene.isDisposed) return; // Note: Strict mode safety
     
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
