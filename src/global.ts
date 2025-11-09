@@ -6,32 +6,43 @@ import HavokPhysics from "@babylonjs/havok";
 import { SceneManager } from "@babylonjs-toolkit/next";
 
 class GameManager {
-    public static async InitializeRuntime(scene:Scene): Promise<void> {
-        await SceneManager.InitializeRuntime(scene.getEngine(), { showDefaultLoadingScreen: true, hideLoadingUIWithEngine: false });
+    public static get IsDevelopmentMode(): boolean { return import.meta.env.DEV; }
+    public static async InitializeRuntime(scene:Scene, navigateToFunction:any = null, showLoadingScreen:boolean = true, hideEngineLoadingUI:boolean = false): Promise<void> {
+        if (scene.isDisposed) return; // Note: Strict mode safety
+        await SceneManager.InitializeRuntime(scene.getEngine(), { showDefaultLoadingScreen: showLoadingScreen, hideLoadingUIWithEngine: hideEngineLoadingUI });
         await import("@babylonjs-toolkit/dlc/DebugInformation");
         await import("@babylonjs-toolkit/dlc/DefaultCameraSystem");
         await import("@babylonjs-toolkit/dlc/MobileInputController");
-        if (import.meta.env.DEV) await import("@babylonjs/inspector");
-        
+        if (GameManager.IsDevelopmentMode) await import("@babylonjs/inspector");
+        if (scene.isDisposed) return; // Note: Strict mode safety
+
+        // Initialize React Navigation Hook (Note: Remark or remove to disable navigation from scene)
+        (scene as any).reactNavigationFunction = navigateToFunction;
+
+        // Havok is only loaded once globally AFTER SceneManager.InitializeRuntime
         if (globalThis.HK == null || globalThis.HKP == null)
         {
             // @ts-ignore - This initializes fresh physics for this scene
             globalThis.HK = await HavokPhysics();
             globalThis.HKP = new HavokPlugin(false);
         }
-        
-        if (globalThis.HK != null && globalThis.HKP != null)
+        if (!scene.isDisposed && globalThis.HK != null && globalThis.HKP != null)
         {
             scene.enablePhysics(new Vector3(0,-9.81,0), globalThis.HKP);
         }
-
-        // This cleans up globals when the scene is disposed
-        const cleanupGlobals = () => {
+        const cleanupGlobals = () =>
+        {
             if (globalThis["HKP"]) delete globalThis["HKP"];
             if (globalThis["HK"]) delete globalThis["HK"];
         };
-        scene.onDisposeObservable.addOnce(cleanupGlobals);
-
+        if (!scene.isDisposed)
+        {
+            scene.onDisposeObservable.addOnce(cleanupGlobals);
+        }
+        else
+        {
+            cleanupGlobals();
+        }
     }
 }
 

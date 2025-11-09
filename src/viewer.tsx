@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
+import { Nullable } from "@babylonjs/core/types";
+import { Observer } from "@babylonjs/core/Misc/observable";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { WebGPUEngine } from "@babylonjs/core/Engines/webgpuEngine";
 import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
@@ -25,88 +27,144 @@ export declare type BabylonjsProps = {
 
 function SceneViewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const { webgpu, antialias, engineOptions = {}, adaptToDeviceRatio, sceneOptions, onRender, onCreateScene, ...rest } = props;
-  const reactCanvas = useRef(null);
+  const reactCanvas = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-      let engine: AbstractEngine;
-      let scene: Scene;
+      let disposeRequested = false;
+      let engine: AbstractEngine | null = null;
+      let scene: Scene | null = null;
       let resizeListener: (() => void) | null = null;
+      let readyObserver: Nullable<Observer<Scene>> = null;
 
-      const initializeEngineAndScene = async () => {
-          const { current: canvas } = reactCanvas;
+      // Initialize the engine and scene (Note: Strict mode safety)
+      const initializeEngineAndScene = async (): Promise<void> => {
+          const canvas = reactCanvas.current;
           if (!canvas) return;
 
-          if (navigator.gpu && webgpu) {
-              // const webGPUSupported = await WebGPUEngine.IsSupportedAsync;            
-              // You can decide which WebGPU extensions to load when creating the engine. I am loading all of them            
-              // await import("@babylonjs/core/Engines/WebGPU/Extensions/");            
-              const webgpuEngine = new WebGPUEngine(canvas, {
-                ...engineOptions,
-                antialias,
-                adaptToDeviceRatio,
-                setMaximumLimits: true,
-                enableAllFeatures:true,
+          try {
+              if (typeof navigator !== "undefined" && navigator.gpu && webgpu) {
+                  const webgpuEngine = new WebGPUEngine(canvas, {
+                      ...engineOptions,
+                      antialias,
+                      adaptToDeviceRatio,
+                      setMaximumLimits: true,
+                      enableAllFeatures: true,
+                  });
+                  await webgpuEngine.initAsync(
+                      { jsPath: "scripts/glslang.js", wasmPath: "scripts/glslang.wasm" },
+                      { jsPath: "scripts/twgsl.js", wasmPath: "scripts/twgsl.wasm" }
+                  );
+
+                  if (disposeRequested) {
+                      try { webgpuEngine.dispose(); } catch (e) { console.warn(e); }
+                      return;
+                  }
+
+                  engine = webgpuEngine as unknown as AbstractEngine;
+              } else {
+                  const fallbackEngine = new Engine(canvas, antialias, engineOptions, adaptToDeviceRatio);
+
+                  if (disposeRequested) {
+                      try { fallbackEngine.dispose(); } catch (e) { console.warn(e); }
+                      return;
+                  }
+
+                  engine = fallbackEngine;
+              }
+              if (!engine) return;
+              
+              scene = new Scene(engine, sceneOptions);
+              if (disposeRequested) {
+                  try { scene.dispose(); } catch (e) { console.warn(e); }
+                  try { engine.dispose(); } catch (e) { console.warn(e); }
+                  engine = null;
+                  scene = null;
+                  return;
+              }
+
+              const defaultCamera = new FreeCamera("defaultCamera", new Vector3(0, 5, -10), scene);
+              defaultCamera.setTarget(Vector3.Zero());
+              scene.activeCamera = defaultCamera;
+              
+              const handleSceneReady = (readyScene: Scene): void => {
+                  if (!disposeRequested) onCreateScene(readyScene);
+              };
+              if (scene.isReady()) {
+                  handleSceneReady(scene);
+              } else {
+                  readyObserver = scene.onReadyObservable.add((readyScene) => {
+                      if (disposeRequested) return;
+                      handleSceneReady(readyScene);
+                      if (scene && readyObserver) {
+                          try { scene.onReadyObservable.remove(readyObserver); } catch (e) { console.warn(e); }
+                          readyObserver = null;
+                      }
+                  });
+              }
+
+              if (disposeRequested) return;
+              engine.runRenderLoop(() => {
+                  if (disposeRequested || !scene || scene.isDisposed) return;
+                  if (typeof onRender === "function") onRender(scene);
+                  scene.render();
               });
-              await webgpuEngine.initAsync( { jsPath: "scripts/glslang.js", wasmPath: "scripts/glslang.wasm" }, { jsPath: "scripts/twgsl.js", wasmPath: "scripts/twgsl.wasm" } );
-              engine = (webgpuEngine as any);
-          } else {
-              engine = new Engine(canvas, antialias, engineOptions, adaptToDeviceRatio);
-          }
 
-          // Create new scene with default camera
-          scene = new Scene(engine, sceneOptions);
-          const defaultCamera = new FreeCamera("defaultCamera", new Vector3(0, 5, -10), scene);
-          defaultCamera.setTarget(Vector3.Zero());
-          scene.activeCamera = defaultCamera;
+              resizeListener = () => { if (!disposeRequested && engine) engine.resize(); };
+              if (typeof window !== "undefined") window.addEventListener("resize", resizeListener);
+          } catch (error) {
+              console.error("Failed to initialize Babylon viewer", error);
 
-          if (scene.isReady()) {
-              onCreateScene(scene);
-          } else {
-              scene.onReadyObservable.addOnce((scene) => onCreateScene(scene));
-          }
+              if (typeof window !== "undefined" && resizeListener) {
+                  try { window.removeEventListener("resize", resizeListener); } catch (e) { console.warn(e); }
+                  resizeListener = null;
+              }
 
-          engine.runRenderLoop(() => {
-              if (typeof onRender === "function") onRender(scene);
-              scene.render();
-          });
+              if (scene && !scene.isDisposed) {
+                  try { scene.dispose(); } catch (e) { console.warn(e); }
+              }
 
-          resizeListener = () => {
-              engine.resize();
-          };
+              if (engine) {
+                  try { engine.dispose(); } catch (e) { console.warn(e); }
+              }
 
-          if (window) {
-              window.addEventListener("resize", resizeListener);
+              engine = null;
+              scene = null;
           }
       };
 
       initializeEngineAndScene();
 
-      // Cleanup function
       return () => {
-          // Remove resize listener
-          if (resizeListener && window) {
-              window.removeEventListener("resize", resizeListener);
-              resizeListener = null;
+          disposeRequested = true;
+
+          if (typeof window !== "undefined" && resizeListener) {
+              try { window.removeEventListener("resize", resizeListener); } catch (e) { console.warn(e); }
           }
 
-          // Get the engine from store as a fallback
-          const storeEngine = EngineStore.LastCreatedEngine;
-          const engineToDispose = engine || storeEngine;
-
-          if (engineToDispose) {
-              // Stop the render loop
-              engineToDispose.stopRenderLoop();
-
-              // Dispose the scene if it exists
-              if (scene) {
-                  scene.dispose();
-                  scene = null as any;
-              }
-
-              // Dispose the engine
-              engineToDispose.dispose();
-              engine = null as any;
+          if (scene && readyObserver) {
+              try { scene.onReadyObservable.remove(readyObserver); } catch (e) { console.warn(e); }
+              readyObserver = null;
           }
+
+          if (engine) {
+              try { engine.stopRenderLoop(); } catch (e) { console.warn(e); }
+          }
+
+          if (scene && (scene as any).reactNavigationFunction) {
+            try { delete (scene as any).reactNavigationFunction; } catch (e) { console.warn(e); }
+          }
+
+          if (scene && !scene.isDisposed) {
+              try { scene.dispose(); } catch (e) { console.warn(e); }
+          }
+
+          if (engine) {
+              try { engine.dispose(); } catch (e) { console.warn(e); }
+              engine = null;
+          }
+
+          scene = null;
+          resizeListener = null;
       };
   }, [webgpu, antialias, engineOptions, adaptToDeviceRatio, sceneOptions, onRender, onCreateScene]);
 
