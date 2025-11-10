@@ -39,12 +39,12 @@ function Babylon(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvas
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
       // STEP 2 - Load the babylon scene assets (GLTF) using the toolkit assets manager
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
-      const xpageurl = new URL(window.location.href.replace("#?", "?"));
-      const xrootpath = (allowQueryParams === true) ? (xpageurl.searchParams.get("root") || defaultRootPath) : defaultRootPath;
-      const xscenefile = (allowQueryParams === true) ? (xpageurl.searchParams.get("scene") || defaultSceneFile) : defaultSceneFile;
+      const babylonPageUrl = new URL(window.location.href.replace("#?", "?"));
+      const babylonRootPath = (allowQueryParams === true) ? (babylonPageUrl.searchParams.get("root") || defaultRootPath) : defaultRootPath;
+      const babylonSceneFile = (allowQueryParams === true) ? (babylonPageUrl.searchParams.get("scene") || defaultSceneFile) : defaultSceneFile;
       assetsManager = new AssetsManager(scene);
-      assetsManager.addMeshTask("BabylonScene", null, xrootpath, xscenefile);
-      await SceneManager.LoadRuntimeAssets(assetsManager, [xscenefile], async () => {
+      assetsManager.addMeshTask("BabylonScene", null, babylonRootPath, babylonSceneFile);
+      await SceneManager.LoadRuntimeAssets(assetsManager, [babylonSceneFile], async () => {
       if (disposed || scene.isDisposed) return; // Note: Strict mode safety
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
