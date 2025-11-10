@@ -31,9 +31,10 @@ function Babylon() {
       // STEP 2 - Load the babylon scene assets (GLTF) using the toolkit assets manager
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
       const pageurl = new URL(window.location.href.replace("#?", "?"));
+      const rootpath = pageurl.searchParams.get("root") || "/scenes/";
       const scenefile = pageurl.searchParams.get("scene") || "samplescene.gltf";
       assetsManager = new AssetsManager(scene);
-      assetsManager.addMeshTask("BabylonScene", null, "/scenes/", scenefile);
+      assetsManager.addMeshTask("BabylonScene", null, rootpath, scenefile);
       await SceneManager.LoadRuntimeAssets(assetsManager, [scenefile], async () => {
       if (disposed || scene.isDisposed) return; // Note: Strict mode safety
 
