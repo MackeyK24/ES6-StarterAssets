@@ -6,14 +6,23 @@ import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { SceneManager } from "@babylonjs-toolkit/next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavigateFunction } from "react-router-dom";
 import { useCallback } from "react";
 import GameManager from "../global.ts";
 import SceneViewer from "../viewer.tsx";
 import "../app.css";
 
-function Babylon() {
-  const navigateTo = useNavigate();
+export declare type SceneViewerProps = {
+  rootPath?: string;
+  sceneFile?: string;
+  allowQueryParams?: boolean;
+};
+
+function Babylon(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
+  const { rootPath, sceneFile, allowQueryParams } = props;
+  const defaultRootPath: string = rootPath || "/scenes/";
+  const defaultSceneFile: string = sceneFile || "mainmenu.gltf";
+  const navigateTo: NavigateFunction = useNavigate();
   const createScene = useCallback(async (scene:Scene) => {
     if (scene.isDisposed) return; // Note: Strict mode safety
     let disposed = false;
@@ -31,8 +40,8 @@ function Babylon() {
       // STEP 2 - Load the babylon scene assets (GLTF) using the toolkit assets manager
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
       const pageurl = new URL(window.location.href.replace("#?", "?"));
-      const rootpath = pageurl.searchParams.get("root") || "/scenes/";
-      const scenefile = pageurl.searchParams.get("scene") || "samplescene.gltf";
+      const rootpath = (allowQueryParams === true) ? (pageurl.searchParams.get("root") || defaultRootPath) : defaultRootPath;
+      const scenefile = (allowQueryParams === true) ? (pageurl.searchParams.get("scene") || defaultSceneFile) : defaultSceneFile;
       assetsManager = new AssetsManager(scene);
       assetsManager.addMeshTask("BabylonScene", null, rootpath, scenefile);
       await SceneManager.LoadRuntimeAssets(assetsManager, [scenefile], async () => {
@@ -50,7 +59,7 @@ function Babylon() {
       assetsManager = null;
       if (disposeObserver) scene.onDisposeObservable.remove(disposeObserver);
     }
-  }, [navigateTo]);
+  }, [rootPath, sceneFile, allowQueryParams, navigateTo]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   // OPTIONAL: Add custom loading div over the root div and disable the default loading screen

@@ -8,7 +8,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Demo />} />
-        <Route path="/babylon" element={<ProtectedRoute><Babylon /></ProtectedRoute>} />
+        <Route path="/babylon" element={<ProtectedRoute><Babylon allowQueryParams={true} /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )
