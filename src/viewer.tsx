@@ -8,6 +8,7 @@ import { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine";
 import { EngineStore } from "@babylonjs/core/Engines/engineStore";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
+import { SceneManager } from "@babylonjs-toolkit/next";
 
 export declare type BabylonjsProps = {
   webgpu?: boolean;
@@ -150,8 +151,8 @@ function SceneViewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanv
               try { engine.stopRenderLoop(); } catch (e) { console.warn(e); }
           }
 
-          if (scene && (scene as any).reactNavigationFunction) {
-            try { delete (scene as any).reactNavigationFunction; } catch (e) { console.warn(e); }
+          if (scene) {
+            try{ SceneManager.DeleteReactNavigationHook(scene); } catch(e) { console.warn(e);
           }
 
           if (scene && !scene.isDisposed) {

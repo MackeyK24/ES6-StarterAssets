@@ -16,8 +16,8 @@ class GameManager {
         if (GameManager.IsDevelopmentMode) await import("@babylonjs/inspector");
         if (scene.isDisposed) return; // Note: Strict mode safety
 
-        // Initialize React Navigation Hook (Note: Remark or remove to disable navigation from scene)
-        (scene as any).reactNavigationFunction = navigateToFunction;
+        // Set React Navigation Hook (Note: Remark or remove to disable navigation from scene)
+        SceneManager.SetReactNavigationHook(scene, navigateToFunction);
 
         // Havok is only loaded once globally AFTER SceneManager.InitializeRuntime
         if (enablePhysics)
