@@ -51,6 +51,9 @@ function Babylon() {
     }
   }, [navigateTo]);
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // OPTIONAL: Add custom loading div over the root div and disable the default loading screen
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (    
     <div className="root">
       <SceneViewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
