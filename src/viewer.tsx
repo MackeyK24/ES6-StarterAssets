@@ -152,7 +152,7 @@ function SceneViewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanv
           }
 
           if (scene) {
-            try{ SceneManager.DeleteReactNavigationHook(scene); } catch(e) { console.warn(e);
+              try { SceneManager.DeleteReactNavigationHook(scene); } catch (e) { console.warn(e); }
           }
 
           if (scene && !scene.isDisposed) {
