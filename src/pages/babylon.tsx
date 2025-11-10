@@ -21,7 +21,7 @@ export declare type SceneViewerProps = {
 function Babylon(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const { rootPath, sceneFile, allowQueryParams } = props;
   const defaultRootPath: string = rootPath || "/scenes/";
-  const defaultSceneFile: string = sceneFile || "mainmenu.gltf";
+  const defaultSceneFile: string = sceneFile || "samplescene.gltf";
   const navigateTo: NavigateFunction = useNavigate();
   const createScene = useCallback(async (scene:Scene) => {
     if (scene.isDisposed) return; // Note: Strict mode safety
@@ -39,12 +39,12 @@ function Babylon(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvas
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
       // STEP 2 - Load the babylon scene assets (GLTF) using the toolkit assets manager
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
-      const pageurl = new URL(window.location.href.replace("#?", "?"));
-      const rootpath = (allowQueryParams === true) ? (pageurl.searchParams.get("root") || defaultRootPath) : defaultRootPath;
-      const scenefile = (allowQueryParams === true) ? (pageurl.searchParams.get("scene") || defaultSceneFile) : defaultSceneFile;
+      const xpageurl = new URL(window.location.href.replace("#?", "?"));
+      const xrootpath = (allowQueryParams === true) ? (xpageurl.searchParams.get("root") || defaultRootPath) : defaultRootPath;
+      const xscenefile = (allowQueryParams === true) ? (xpageurl.searchParams.get("scene") || defaultSceneFile) : defaultSceneFile;
       assetsManager = new AssetsManager(scene);
-      assetsManager.addMeshTask("BabylonScene", null, rootpath, scenefile);
-      await SceneManager.LoadRuntimeAssets(assetsManager, [scenefile], async () => {
+      assetsManager.addMeshTask("BabylonScene", null, xrootpath, xscenefile);
+      await SceneManager.LoadRuntimeAssets(assetsManager, [xscenefile], async () => {
       if (disposed || scene.isDisposed) return; // Note: Strict mode safety
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ function Babylon(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvas
       assetsManager = null;
       if (disposeObserver) scene.onDisposeObservable.remove(disposeObserver);
     }
-  }, [rootPath, sceneFile, allowQueryParams, navigateTo]);
+  }, [allowQueryParams, defaultRootPath, defaultSceneFile, navigateTo]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   // OPTIONAL: Add custom loading div over the root div and disable the default loading screen
