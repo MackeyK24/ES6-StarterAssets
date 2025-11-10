@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/demo" element={<Demo />} />
-        <Route path="/babylon" element={<ProtectedRoute><Babylon allowQueryParams={true} /></ProtectedRoute>} />
+        <Route path="/babylon" element={<ProtectedRoute allowDevMode={true}><Babylon allowQueryParams={true} /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )

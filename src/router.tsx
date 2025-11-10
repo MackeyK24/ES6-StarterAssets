@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   redirectTo?: string;
+  allowDevMode?: boolean;
 }
 
 /**
@@ -13,19 +14,22 @@ interface ProtectedRouteProps {
  * Example: navigate('/demo', { state: { fromApp: true } });
  */
 
-export default function ProtectedRoute({ children, redirectTo = '/' }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, redirectTo = '/', allowDevMode = false }: ProtectedRouteProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const isDevMode: boolean = import.meta.env.DEV === true;
+  const allowByState: boolean = Boolean(location.state?.fromApp);
+  const isAllowed: boolean = allowByState || (allowDevMode && isDevMode);
 
   useEffect(() => {
     // If no state was passed (direct browser access), redirect
-    if (!location.state || !location.state.fromApp) {
+    if (!isAllowed) {
       navigate(redirectTo, { replace: true });
     }
-  }, [location, navigate, redirectTo]);
+  }, [isAllowed, navigate, redirectTo]);
 
   // Only render if accessed from within app
-  if (!location.state || !location.state.fromApp) {
+  if (!isAllowed) {
     return null;
   }
 
