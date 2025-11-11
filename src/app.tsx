@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./router.tsx";
-import Babylon from "./pages/babylon.tsx";
-import Demo from "./pages/playground.tsx";
+import Babylon from "./viewers/babylon.tsx";
+import Demo from "./viewers/playground.tsx";
 import Home from "./home.tsx";
 
 function App() {
