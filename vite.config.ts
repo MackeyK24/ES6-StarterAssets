@@ -53,7 +53,7 @@ export default defineConfig(({ mode }) => ({
     },
     middlewareMode: false,
     open: true, // Automatically open the browser
-    port: 3001, // Default port for the development server
+    port: 8080, // Default port for the development server
   },
   plugins: [
     react(),
