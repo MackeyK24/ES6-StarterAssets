@@ -15,13 +15,13 @@ export default defineConfig(({ mode }) => ({
       output: {
         entryFileNames: "[name].js",
         assetFileNames: "[name].[ext]",
-        inlineDynamicImports: false,
+        inlineDynamicImports: true, // Enables bundling all dynamic imports into a single [name].js file
       }
     }
   },
   esbuild: {
     supported: {
-        "top-level-await": true
+        "top-level-await": true // Browsers can handle top-level-await features
     },
     treeShaking: mode === 'production',
     minifySyntax: mode === 'production', 
