@@ -13,6 +13,7 @@ class GameManager {
         await import("@babylonjs-toolkit/dlc/DebugInformation");
         await import("@babylonjs-toolkit/dlc/DefaultCameraSystem");
         await import("@babylonjs-toolkit/dlc/MobileInputController");
+        await import("@babylonjs-toolkit/dlc/ThirdPersonPlayerController");
         if (GameManager.IsDevelopmentMode) await import("@babylonjs/inspector");
         if (scene.isDisposed) return; // Note: Strict mode safety
 
