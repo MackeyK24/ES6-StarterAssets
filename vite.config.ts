@@ -117,17 +117,17 @@ export default defineConfig(({ mode }) => ({
       configureServer(server) {
         server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
           if (req.originalUrl) {
-            if (req.originalUrl.endsWith(".gltf")) {
+            if (req.originalUrl.endsWith(".gltf") || req.originalUrl.endsWith(".gz.gltf")) {
               res.setHeader("Content-Type", "model/gltf+json");
               res.setHeader("Access-Control-Allow-Origin", "*");
               res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
               res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            } else if (req.originalUrl.endsWith(".glb")) {
+            } else if (req.originalUrl.endsWith(".glb") || req.originalUrl.endsWith(".gz.glb")) {
               res.setHeader("Content-Type", "model/gltf-binary");
               res.setHeader("Access-Control-Allow-Origin", "*");
               res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
               res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            } else if (req.originalUrl.endsWith(".bin")) {
+            } else if (req.originalUrl.endsWith(".bin") || req.originalUrl.endsWith(".gz.bin")) {
               res.setHeader("Content-Type", "application/octet-stream");
               res.setHeader("Access-Control-Allow-Origin", "*");
             }
@@ -138,17 +138,17 @@ export default defineConfig(({ mode }) => ({
       configurePreviewServer(server) {
         server.middlewares.use((req: Connect.IncomingMessage, res, next) => {
           if (req.originalUrl) {
-            if (req.originalUrl.endsWith(".gltf")) {
+            if (req.originalUrl.endsWith(".gltf") || req.originalUrl.endsWith(".gz.gltf")) {
               res.setHeader("Content-Type", "model/gltf+json");
               res.setHeader("Access-Control-Allow-Origin", "*");
               res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
               res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            } else if (req.originalUrl.endsWith(".glb")) {
+            } else if (req.originalUrl.endsWith(".glb") || req.originalUrl.endsWith(".gz.glb")) {
               res.setHeader("Content-Type", "model/gltf-binary");
               res.setHeader("Access-Control-Allow-Origin", "*");
               res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
               res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-            } else if (req.originalUrl.endsWith(".bin")) {
+            } else if (req.originalUrl.endsWith(".bin") || req.originalUrl.endsWith(".gz.bin")) {
               res.setHeader("Content-Type", "application/octet-stream");
               res.setHeader("Access-Control-Allow-Origin", "*");
             }
