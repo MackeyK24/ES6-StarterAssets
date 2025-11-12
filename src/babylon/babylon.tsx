@@ -18,6 +18,11 @@ export declare type SceneViewerProps = {
   allowQueryParams?: boolean;
 };
 
+/**
+ * ES6 Interactive Babylon Toolkit Scene Viewer (UnityGLTF)
+ * @param props scene viewer properties
+ */
+
 function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const { rootPath, sceneFile, allowQueryParams } = props;
   const defaultRootPath: string = rootPath || "/scenes/";
