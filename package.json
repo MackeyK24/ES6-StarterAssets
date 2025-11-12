@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "npm run build && npm run preview",
-    "deploy-all": "npm run build && node deployment/aws.js"
+    "deploy-all": "npm run build && node aws/deploy.js"
   },
   "dependencies": {
     "@babylonjs/core": "^8.36.1",

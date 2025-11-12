@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This document explains how to configure and run the Babylon.js web app deployment script located in `deployment/aws.js`. The script uploads the built `dist` folder to Amazon S3 and optionally invalidates a CloudFront distribution. It also applies `Content-Encoding: gzip` to precompressed artifacts that end with `.gzip`, `.gz.gltf`, or `.gz.glb`.
+This document explains how to configure and run the Babylon.js web app deployment script located in `aws/deploy.js`. The script uploads the built `dist` folder to Amazon S3 and optionally invalidates a CloudFront distribution. It also applies `Content-Encoding: gzip` to precompressed artifacts that end with `.gzip`, `.gz.gltf`, or `.gz.glb`.
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ npm run build
 npm run deploy
 ```
 
-Running `npm run deploy` executes `node deployment/aws.js` after building the project. The script reads configuration from `deployment/deploy.json` and resolves credentials via the AWS SDK default chain (profile, environment variables, SSO, etc.).
+Running `npm run deploy` executes `node aws/deploy.js` after building the project. The script reads configuration from `deployment/deploy.json` and resolves credentials via the AWS SDK default chain (profile, environment variables, SSO, etc.).
 
 ## `deployment/deploy.json`
 
