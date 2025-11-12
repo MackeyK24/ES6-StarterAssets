@@ -4,7 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './app.css'
 
-function Home() {
+function HomePage() {
   const navigate: NavigateFunction = useNavigate();
 
   return (
@@ -22,7 +22,7 @@ function Home() {
       </div>
       <h1>Vite + React + BabylonJS</h1>
       <div className="card">
-        <button onClick={() => navigate('/demo')}>Demo Playground</button>
+        <button onClick={() => navigate("/babylon", { state: { fromApp: true } })}>Sample Scene</button>
       </div>
       <p className="read-the-docs">
         Click on the Vite or React or BabylonJS logos to learn more
@@ -34,4 +34,4 @@ function Home() {
   )
 }
 
-export default Home
+export default HomePage

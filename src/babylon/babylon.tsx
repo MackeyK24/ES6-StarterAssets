@@ -6,10 +6,10 @@ import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { SceneManager } from "@babylonjs-toolkit/next";
-import { useNavigate, NavigateFunction } from "react-router-dom";
 import { useCallback } from "react";
+import { useNavigate, NavigateFunction } from "react-router-dom";
+import BaseSceneViewer from "./viewer.tsx";
 import GameManager from "../global.ts";
-import SceneViewer from "../viewer.tsx";
 import "../app.css";
 
 export declare type SceneViewerProps = {
@@ -18,7 +18,7 @@ export declare type SceneViewerProps = {
   allowQueryParams?: boolean;
 };
 
-function Babylon(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
+function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const { rootPath, sceneFile, allowQueryParams } = props;
   const defaultRootPath: string = rootPath || "/scenes/";
   const defaultSceneFile: string = sceneFile || "samplescene.gltf";
@@ -66,9 +66,9 @@ function Babylon(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvas
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (    
     <div className="root">
-      <SceneViewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
+      <BaseSceneViewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
     </div>
   );
 }
 
-export default Babylon;
+export default BabylonSceneViewer;

@@ -26,7 +26,7 @@ export declare type BabylonjsProps = {
   children?: React.ReactNode;
 };
 
-function SceneViewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
+function BaseSceneViewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const { webgpu, antialias, engineOptions = {}, adaptToDeviceRatio, sceneOptions, onRender, onCreateScene, ...rest } = props;
   const reactCanvas = useRef<HTMLCanvasElement | null>(null);
 
@@ -172,4 +172,4 @@ function SceneViewer(props: BabylonjsProps & React.CanvasHTMLAttributes<HTMLCanv
   return <canvas ref={reactCanvas} {...rest} />;
 }
 
-export default SceneViewer;
+export default BaseSceneViewer;
