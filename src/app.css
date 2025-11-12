@@ -1,6 +1,6 @@
 /* Babylon Toolkit Default Styles */
 
-.root, #root, #my-root {
+.viewer, #viewer, #my-viewer {
   width: 100%;
   height: 100vh;
   margin: 0;
@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 
-.canvas, #my-canvas {
+.canvas, #canvas, #my-canvas {
   width: 100%;
   height: 100vh;
   margin: 0;
@@ -20,7 +20,7 @@
   overflow: hidden;
 }
 
-/* Application Level Default Styles */
+/* Web Application Default Styles */
 
 #vite {
   position: absolute;

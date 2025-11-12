@@ -70,7 +70,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
   // OPTIONAL: Add custom loading div over the root div and disable the default loading screen
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (    
-    <div className="root">
+    <div className="viewer">
       <BaseSceneViewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
     </div>
   );
