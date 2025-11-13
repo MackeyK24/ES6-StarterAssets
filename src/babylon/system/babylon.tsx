@@ -10,7 +10,7 @@ import { useCallback } from "react";
 import { useLocation, useNavigate, NavigateFunction, Location } from "react-router-dom";
 import BaseSceneViewer from "./viewer.tsx";
 import CustomOverlay from "../custom/overlay.tsx";
-import GameManager from "../custom/globals.ts";
+import GameManager from "../globals.ts";
 import "./babylon.css";
 
 export declare type SceneViewerProps = {

@@ -3,13 +3,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
-  min-width: 100vw;
-  min-height: 100vh;  /* Ensure full viewport height */  
-  overflow: hidden;
   z-index: 0;
+  overflow: hidden;
+  contain: layout style paint; /* Isolates layout, style, and paint for better performance */
+  isolation: isolate; /* Creates a new stacking context to reduce compositing overhead */
 }
 
 .canvas, #canvas, #my-canvas {
@@ -17,13 +17,12 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
-  max-width: 100vw;
-  min-height: 100vh;  /* Ensure full viewport height */  
-  overflow: hidden;
   z-index: 1;
+  overflow: hidden;
+  will-change: auto; /* Hints browser to optimize for potential changes */
 }
 
 .overlay, #overlay, #my-overlay {
@@ -31,15 +30,14 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
-  max-width: 100vw;
-  min-height: 100vh;  /* Ensure full viewport height */  
+  z-index: 10;
   overflow: hidden;
   pointer-events: none;
   background-color: transparent;
-  z-index: 10;
+  will-change: auto; /* Optimizes for potential UI animations in React overlay */
 }
 
 .babylonUnmute, #babylonUnmuteButton, #babylonUnmuteIconBtn {
