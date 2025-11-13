@@ -22,7 +22,7 @@ function HomePage() {
       </div>
       <h1>Vite + React + BabylonJS</h1>
       <div className="card">
-        <button onClick={() => navigate("/babylon", { state: { fromApp: true } })}>Sample Scene</button>
+        <button onClick={() => navigate("/babylon", { state: { fromApp: true, rootPath: "/scenes/", sceneFile: "samplescene.gltf" } })}>Sample Scene</button>
       </div>
       <p className="read-the-docs">
         Click on the Vite or React or BabylonJS logos to learn more

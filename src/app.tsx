@@ -10,7 +10,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/babylon" element={
           <ProtectedRoute allowDevMode={true}>
-            <BabylonSceneViewer rootPath="/scenes/" sceneFile="samplescene.gltf" allowQueryParams={true} />
+            <BabylonSceneViewer rootPath="/scenes/" sceneFile="mainmenu.gltf" allowQueryParams={true} />
           </ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
