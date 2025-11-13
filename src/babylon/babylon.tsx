@@ -9,13 +9,15 @@ import { SceneManager } from "@babylonjs-toolkit/next";
 import { useCallback } from "react";
 import { useLocation, useNavigate, NavigateFunction, Location } from "react-router-dom";
 import BaseSceneViewer from "./viewer.tsx";
+import CustomOverlay from "../custom/overlay.tsx";
 import GameManager from "../global.ts";
-import "../app.css";
+import "./babylon.css";
 
 export declare type SceneViewerProps = {
   rootPath?: string;
   sceneFile?: string;
   allowQueryParams?: boolean;
+  enableCustomOverlay?: boolean;
 };
 
 /**
@@ -27,7 +29,7 @@ export declare type SceneViewerProps = {
  */
 
 function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
-  const { rootPath, sceneFile, allowQueryParams } = props;
+  const { rootPath, sceneFile, allowQueryParams, enableCustomOverlay } = props;
   const locationRef:Location = useLocation();
   const navigateTo: NavigateFunction = useNavigate();
   const createScene = useCallback(async (scene:Scene) => {
@@ -49,7 +51,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       let isDevelopment: boolean = (import.meta.env.DEV === true);
       let defaultPageUrl: URL = new URL(window.location.href.replace("#?", "?"));
       let babylonRootPath: string = rootPath || "/scenes/";
-      let babylonSceneFile: string = sceneFile || "mainmenu.gltf";
+      let babylonSceneFile: string = sceneFile || "samplescene.gltf";
       if (allowQueryParams === true) {
         babylonRootPath = locationRef?.state?.rootPath || babylonRootPath;
         babylonSceneFile = locationRef?.state?.sceneFile || babylonSceneFile;
@@ -76,7 +78,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       assetsManager = null;
       if (disposeObserver) scene.onDisposeObservable.remove(disposeObserver);
     }
-  }, [allowQueryParams, locationRef, navigateTo]);
+  }, [enableCustomOverlay, allowQueryParams, locationRef, navigateTo]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   // OPTIONAL: Add custom loading div over the root div and disable the default loading screen
@@ -84,6 +86,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
   return (    
     <div className="viewer">
       <BaseSceneViewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
+      {props.enableCustomOverlay && <CustomOverlay className="overlay" />}
     </div>
   );
 }

@@ -1,0 +1,47 @@
+.viewer, #viewer, #my-viewer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  min-width: 100vw;
+  min-height: 100vh;  /* Ensure full viewport height */  
+  overflow: hidden;
+  z-index: 0;
+}
+
+.canvas, #canvas, #my-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+  min-height: 100vh;  /* Ensure full viewport height */  
+  overflow: hidden;
+  z-index: 1;
+}
+
+.overlay, #overlay, #my-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+  min-height: 100vh;  /* Ensure full viewport height */  
+  overflow: hidden;
+  pointer-events: none;
+  background-color: transparent;
+  z-index: 10;
+}
+
+.babylonUnmute, #babylonUnmuteButton, #babylonUnmuteIconBtn {
+    display: none !important;
+}
