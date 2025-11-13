@@ -8,7 +8,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/babylon" element={<ProtectedRoute allowDevMode={true}><BabylonSceneViewer allowQueryParams={true} /></ProtectedRoute>} />
+        <Route path="/babylon" element={
+          <ProtectedRoute allowDevMode={true}>
+            <BabylonSceneViewer rootPath="/scenes/" sceneFile="samplescene.gltf" allowQueryParams={true} />
+          </ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )

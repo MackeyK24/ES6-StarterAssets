@@ -17,19 +17,19 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children, redirectTo = '/', allowDevMode = false }: ProtectedRouteProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const isDevMode: boolean = import.meta.env.DEV === true;
   const allowByState: boolean = Boolean(location.state?.fromApp);
-  const isAllowed: boolean = allowByState || (allowDevMode && isDevMode);
+  const isDevelopment: boolean = (import.meta.env.DEV === true);
+  const isRouteAllowed: boolean = allowByState || (allowDevMode && isDevelopment);
 
   useEffect(() => {
     // If no state was passed (direct browser access), redirect
-    if (!isAllowed) {
+    if (!isRouteAllowed) {
       navigate(redirectTo, { replace: true });
     }
-  }, [isAllowed, navigate, redirectTo]);
+  }, [isRouteAllowed, navigate, redirectTo]);
 
   // Only render if accessed from within app
-  if (!isAllowed) {
+  if (!isRouteAllowed) {
     return null;
   }
 

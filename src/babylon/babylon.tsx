@@ -7,7 +7,7 @@ import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { SceneManager } from "@babylonjs-toolkit/next";
 import { useCallback } from "react";
-import { useNavigate, NavigateFunction } from "react-router-dom";
+import { useLocation, useNavigate, NavigateFunction, Location } from "react-router-dom";
 import BaseSceneViewer from "./viewer.tsx";
 import GameManager from "../global.ts";
 import "../app.css";
@@ -19,14 +19,16 @@ export declare type SceneViewerProps = {
 };
 
 /**
- * ES6 Interactive Babylon Toolkit Scene Viewer (UnityGLTF)
- * @param props scene viewer properties
+ * ES6 Interactive Babylon Toolkit Scene Viewer (GLTF)
+ * Example: navigate('/babylon', { state: { fromApp: true, rootPath: '/scenes/', sceneFile: 'sampleScene.gltf' } });
+ * @param fromApp navigation flag
+ * @param rootPath scene location
+ * @param sceneFile scene filename
  */
 
 function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const { rootPath, sceneFile, allowQueryParams } = props;
-  const defaultRootPath: string = rootPath || "/scenes/";
-  const defaultSceneFile: string = sceneFile || "samplescene.gltf";
+  const locationRef:Location = useLocation();
   const navigateTo: NavigateFunction = useNavigate();
   const createScene = useCallback(async (scene:Scene) => {
     if (scene.isDisposed) return; // Note: Strict mode safety
@@ -44,9 +46,18 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
       // STEP 2 - Load the babylon scene assets (GLTF) using the toolkit assets manager
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
-      const babylonPageUrl = new URL(window.location.href.replace("#?", "?"));
-      const babylonRootPath = (allowQueryParams === true) ? (babylonPageUrl.searchParams.get("root") || defaultRootPath) : defaultRootPath;
-      const babylonSceneFile = (allowQueryParams === true) ? (babylonPageUrl.searchParams.get("scene") || defaultSceneFile) : defaultSceneFile;
+      let isDevelopment: boolean = (import.meta.env.DEV === true);
+      let defaultPageUrl: URL = new URL(window.location.href.replace("#?", "?"));
+      let babylonRootPath: string = rootPath || "/scenes/";
+      let babylonSceneFile: string = sceneFile || "samplescene.gltf";
+      if (allowQueryParams === true) {
+        babylonRootPath = locationRef?.state?.rootPath || babylonRootPath;
+        babylonSceneFile = locationRef?.state?.sceneFile || babylonSceneFile;
+        if (isDevelopment === true) {
+          babylonRootPath = defaultPageUrl.searchParams.get("root") || babylonRootPath;
+          babylonSceneFile = defaultPageUrl.searchParams.get("scene") || babylonSceneFile;
+        }
+      }
       assetsManager = new AssetsManager(scene);
       assetsManager.addMeshTask("BabylonScene", null, babylonRootPath, babylonSceneFile);
       await SceneManager.LoadRuntimeAssets(assetsManager, [babylonSceneFile], async () => {
@@ -55,6 +66,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         // STEP 3 - Finalize scene setup after assets are loaded and hide the loading screen
         /////////////////////////////////////////////////////////////////////////////////////////////////////
+        GameManager.LocalBus.PostMessage("OnSceneReady", babylonSceneFile);
         SceneManager.HideLoadingScreen(scene.getEngine());
         SceneManager.FocusRenderCanvas(scene);
       });
@@ -64,7 +76,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       assetsManager = null;
       if (disposeObserver) scene.onDisposeObservable.remove(disposeObserver);
     }
-  }, [allowQueryParams, defaultRootPath, defaultSceneFile, navigateTo]);
+  }, [allowQueryParams, locationRef, navigateTo]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   // OPTIONAL: Add custom loading div over the root div and disable the default loading screen
