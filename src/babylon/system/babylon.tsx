@@ -10,7 +10,7 @@ import { useCallback } from "react";
 import { useLocation, useNavigate, NavigateFunction, Location } from "react-router-dom";
 import BaseSceneViewer from "./viewer.tsx";
 import CustomOverlay from "../custom/overlay.tsx";
-import GameManager from "../global.ts";
+import GameManager from "../custom/globals.ts";
 import "./babylon.css";
 
 export declare type SceneViewerProps = {
@@ -78,7 +78,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       assetsManager = null;
       if (disposeObserver) scene.onDisposeObservable.remove(disposeObserver);
     }
-  }, [enableCustomOverlay, allowQueryParams, locationRef, navigateTo]);
+  }, [rootPath, sceneFile, allowQueryParams, locationRef, navigateTo]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   // OPTIONAL: Add custom loading div over the root div and disable the default loading screen
@@ -86,7 +86,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
   return (    
     <div className="viewer">
       <BaseSceneViewer webgpu={true} antialias={true} adaptToDeviceRatio={true} onCreateScene={createScene} className="canvas" />
-      {props.enableCustomOverlay && <CustomOverlay className="overlay" />}
+      {props.enableCustomOverlay && <CustomOverlay />}
     </div>
   );
 }

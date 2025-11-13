@@ -1,6 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import BabylonSceneViewer from "./babylon/babylon.tsx";
-import ProtectedRoute from "./babylon/routing.tsx";
+import { BrowserRouter, Routes, Route, NavigateFunction, useNavigate } from "react-router-dom";
+import BabylonSceneViewer from "./babylon/system/babylon.tsx";
+import ProtectedRoute from "./babylon/system/routing.tsx";
 import babylonLogo from './assets/babylon.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'

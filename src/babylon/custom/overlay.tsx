@@ -1,4 +1,5 @@
 import { useNavigate, NavigateFunction } from "react-router-dom";
+import "./overlay.css";
 
 function CustomOverlay() {
   const navigate: NavigateFunction = useNavigate();
