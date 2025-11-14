@@ -1,2 +1,2 @@
-# Babylon Toolkit React Library
+# Babylon Toolkit React Framework
 React component documentation
