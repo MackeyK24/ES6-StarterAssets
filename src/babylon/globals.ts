@@ -6,8 +6,6 @@ import HavokPhysics from "@babylonjs/havok";
 import { SceneManager, LocalMessageBus } from "@babylonjs-toolkit/next";
 
 class GameManager {
-    /** Development mode flag */
-    public static get IsDevelopmentMode(): boolean { return import.meta.env.DEV; }
     /** Initialize the game runtime environment */
     public static async InitializeRuntime(scene:Scene, navigateToFunction:any = null, enablePhysics:boolean = true, showLoadingScreen:boolean = true, hideEngineLoadingUI:boolean = false): Promise<void> {
         if (scene.isDisposed) return; // Note: Strict mode safety
@@ -50,21 +48,59 @@ class GameManager {
             }
         }
     }
-    /** Local synchronous event message bus */
-    private static _LocalMessageBus: LocalMessageBus = null;
-    /** Synchronous local event message bus 
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Global Game State
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static _GlobalState: any = {};
+    /** Global game state */
+    public static get GlobalState(): any { return GameManager._GlobalState; }
+    /** Load global game state from storage */
+    public static LoadGameState(storage:StorageType): void {
+        if (storage === StorageType.Local) {
+            const savedState = localStorage.getItem("GlobalGameState");
+            if (savedState) GameManager._GlobalState = JSON.parse(savedState);
+        } else if (storage === StorageType.Session) {
+            const savedState = sessionStorage.getItem("GlobalGameState");
+            if (savedState) GameManager._GlobalState = JSON.parse(savedState);
+        }
+    }
+    /** Save global game state to storage */
+    public static SaveGameState(storage:StorageType): void {
+        if (storage === StorageType.Local) {
+            localStorage.setItem("GlobalGameState", JSON.stringify(GameManager._GlobalState));
+        } else if (storage === StorageType.Session) {
+            sessionStorage.setItem("GlobalGameState", JSON.stringify(GameManager._GlobalState));
+        }
+    }
+    /** Reset global game state */
+    public static ResetGameState(): void {
+        GameManager._GlobalState = {};
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Synchronous Message Bus
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private static _SynchronousMessageBus: LocalMessageBus = null;
+    /** Synchronous event message bus 
      * @examples 
      * // Handle myevent message
-     * GameManager.LocalBus.OnMessage("myevent", (data:string) => {
+     * GameManager.EventBus.OnMessage("myevent", (data:string) => {
      *    console.log("My Event Data: " + data);
      * });
      * // Post myevent message
-     * GameManager.LocalBus.PostMessage("myevent", "Hello World!");
+     * GameManager.EventBus.PostMessage("myevent", "Hello World!");
     */
-    public static get LocalBus(): LocalMessageBus {
-        if (GameManager._LocalMessageBus == null) GameManager._LocalMessageBus = new LocalMessageBus();
-        return GameManager._LocalMessageBus;
+    public static get EventBus(): LocalMessageBus {
+        if (GameManager._SynchronousMessageBus == null) GameManager._SynchronousMessageBus = new LocalMessageBus();
+        return GameManager._SynchronousMessageBus;
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Development Mode Flag
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static get IsDevelopmentMode(): boolean { return import.meta.env.DEV; }
 }
+export enum StorageType { Local = 0, Session = 1 }
 
 export default GameManager;

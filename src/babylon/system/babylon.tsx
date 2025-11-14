@@ -68,7 +68,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         // STEP 3 - Finalize scene setup after assets are loaded and hide the loading screen
         /////////////////////////////////////////////////////////////////////////////////////////////////////
-        GameManager.LocalBus.PostMessage("OnSceneReady", babylonSceneFile);
+        GameManager.EventBus.PostMessage("OnSceneReady", babylonSceneFile);
         SceneManager.HideLoadingScreen(scene.getEngine());
         SceneManager.FocusRenderCanvas(scene);
       });
