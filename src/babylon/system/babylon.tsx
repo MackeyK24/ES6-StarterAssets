@@ -1,17 +1,18 @@
 import { Scene } from "@babylonjs/core/scene";
+import { Tools } from "@babylonjs/core/Misc/tools";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { Nullable } from "@babylonjs/core/types";
 import { Observer } from "@babylonjs/core/Misc/observable";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
-import { SceneManager } from "@babylonjs-toolkit/next";
+import { SceneManager, ScriptComponent, Utilities } from "@babylonjs-toolkit/next";
 import { useCallback } from "react";
 import { useLocation, useNavigate, NavigateFunction, Location } from "react-router-dom";
 import BaseSceneViewer from "./viewer.tsx";
 import CustomOverlay from "../custom/overlay.tsx";
 import GameManager from "../globals.ts";
-import "./babylon.css";
+import "./css";
 
 export declare type SceneViewerProps = {
   rootPath?: string;
@@ -53,6 +54,21 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       let babylonRootPath: string = rootPath || "/scenes/";
       let babylonSceneFile: string = sceneFile || "samplescene.gltf";
       if ((babylonRootPath != null && babylonRootPath !== "" && babylonRootPath.toLowerCase() === "_blank") || (babylonSceneFile != null && babylonSceneFile !== "" && babylonSceneFile.toLowerCase() === "_blank")) {
+          GameManager.EventBus.PostMessage("OnSceneReady", { rootPath: babylonRootPath, sceneFile: babylonSceneFile });
+          SceneManager.HideLoadingScreen(scene.getEngine());
+          SceneManager.FocusRenderCanvas(scene);
+          return; // Note: Bail Out Early
+      }
+      if ((babylonRootPath != null && babylonRootPath !== "" && babylonRootPath.toLowerCase() === "_controller" && babylonSceneFile != null && babylonSceneFile !== "")) {
+          let ScriptComponentName: string = babylonSceneFile;
+          const ScriptComponentClass = Utilities.InstantiateClass(ScriptComponentName);
+          if (ScriptComponentClass != null) {
+            const sceneController = new TransformNode("SceneController", scene);
+            const scriptComponent: ScriptComponent = new ScriptComponentClass(sceneController, scene, {}, babylonSceneFile);
+            if (scriptComponent == null) Tools.Warn("Failed to instantiate script class: " + ScriptComponentName);
+          } else {
+              Tools.Warn("Failed to locate script class: " + ScriptComponentName);
+          }
           GameManager.EventBus.PostMessage("OnSceneReady", { rootPath: babylonRootPath, sceneFile: babylonSceneFile });
           SceneManager.HideLoadingScreen(scene.getEngine());
           SceneManager.FocusRenderCanvas(scene);
