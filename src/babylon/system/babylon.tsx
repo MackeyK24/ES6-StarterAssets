@@ -52,6 +52,14 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       let defaultPageUrl: URL = new URL(window.location.href.replace("#?", "?"));
       let babylonRootPath: string = rootPath || "/scenes/";
       let babylonSceneFile: string = sceneFile || "samplescene.gltf";
+      if (babylonSceneFile != null && babylonSceneFile !== "") {
+        if (babylonSceneFile.toLowerCase() === "_blank") {
+          GameManager.EventBus.PostMessage("OnSceneReady", babylonSceneFile);
+          SceneManager.HideLoadingScreen(scene.getEngine());
+          SceneManager.FocusRenderCanvas(scene);
+          return; // Note: Bail Out Early
+        }
+      }
       if (allowQueryParams === true) {
         babylonRootPath = locationRef?.state?.rootPath || babylonRootPath;
         babylonSceneFile = locationRef?.state?.sceneFile || babylonSceneFile;
