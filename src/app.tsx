@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, NavigateFunction, useNavigate } from "react-router-dom";
 import BabylonSceneViewer from "./babylon/system/babylon.tsx";
-import ProtectedRoute from "./babylon/system/routing.tsx";
+import ApplicationRoute from "./babylon/system/routing.tsx";
 import babylonLogo from './assets/babylon.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -41,9 +41,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/babylon" element={
-          <ProtectedRoute allowDevMode={true}>
+          <ApplicationRoute allowDevMode={true}>
             <BabylonSceneViewer rootPath="/scenes/" sceneFile="samplescene.gltf" allowQueryParams={true} enableCustomOverlay={false} />
-          </ProtectedRoute>} />
+          </ApplicationRoute>} />
       </Routes>
     </BrowserRouter>
   )
