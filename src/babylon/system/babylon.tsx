@@ -17,20 +17,22 @@ import "./css";
 export declare type SceneViewerProps = {
   rootPath?: string;
   sceneFile?: string;
+  auxiliaryData?: any;
   allowQueryParams?: boolean;
   enableCustomOverlay?: boolean;
 };
 
 /**
  * ES6 Interactive Babylon Toolkit Scene Viewer (GLTF)
- * Example: navigate('/babylon', { state: { fromApp: true, rootPath: '/scenes/', sceneFile: 'sampleScene.gltf' } });
+ * Example: navigate('/babylon', { state: { fromApp: true, rootPath: '/scenes/', sceneFile: 'sampleScene.gltf', auxiliaryData: null } });
  * @param fromApp navigation flag
  * @param rootPath scene location
  * @param sceneFile scene filename
+ * @param auxiliaryData aux data string
  */
 
 function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
-  const { rootPath, sceneFile, allowQueryParams, enableCustomOverlay } = props;
+  const { rootPath, sceneFile, auxiliaryData, allowQueryParams, enableCustomOverlay } = props;
   const locationRef:Location = useLocation();
   const navigateTo: NavigateFunction = useNavigate();
   const createScene = useCallback(async (scene:Scene) => {
@@ -53,16 +55,22 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       let defaultPageUrl: URL = new URL(window.location.href.replace("#?", "?"));
       let babylonRootPath: string = rootPath || "/scenes/";
       let babylonSceneFile: string = sceneFile || "samplescene.gltf";
+      let babylonAuxiliaryData:string = auxiliaryData || null;
       if (allowQueryParams === true) {
         babylonRootPath = locationRef?.state?.rootPath || babylonRootPath;
         babylonSceneFile = locationRef?.state?.sceneFile || babylonSceneFile;
+        babylonAuxiliaryData = locationRef?.state?.auxiliaryData || babylonAuxiliaryData;
         if (isDevelopment === true) {
           babylonRootPath = defaultPageUrl.searchParams.get("root") || babylonRootPath;
           babylonSceneFile = defaultPageUrl.searchParams.get("scene") || babylonSceneFile;
+          babylonAuxiliaryData = defaultPageUrl.searchParams.get("aux") || babylonAuxiliaryData;
         }
       }
+      if (babylonAuxiliaryData != null && babylonAuxiliaryData !== "") {
+        SceneManager.SetAuxiliaryData(scene, babylonAuxiliaryData);
+      }
       if ((babylonRootPath != null && babylonRootPath !== "" && babylonRootPath.toLowerCase() === "_blank") || (babylonSceneFile != null && babylonSceneFile !== "" && babylonSceneFile.toLowerCase() === "_blank")) {
-          GameManager.EventBus.PostMessage("OnSceneReady", { rootPath: babylonRootPath, sceneFile: babylonSceneFile });
+          GameManager.EventBus.PostMessage("OnSceneReady", { scene, rootPath: babylonRootPath, sceneFile: babylonSceneFile });
           SceneManager.HideLoadingScreen(scene.getEngine());
           SceneManager.FocusRenderCanvas(scene);
           return; // Note: Bail Out Early
@@ -75,7 +83,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         // STEP 3 - Finalize scene setup after assets are loaded and hide the loading screen
         /////////////////////////////////////////////////////////////////////////////////////////////////////
-        GameManager.EventBus.PostMessage("OnSceneReady", babylonSceneFile);
+        GameManager.EventBus.PostMessage("OnSceneReady", { scene, rootPath: babylonRootPath, sceneFile: babylonSceneFile });
         SceneManager.HideLoadingScreen(scene.getEngine());
         SceneManager.FocusRenderCanvas(scene);
       });
@@ -85,7 +93,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       assetsManager = null;
       if (disposeObserver) scene.onDisposeObservable.remove(disposeObserver);
     }
-  }, [rootPath, sceneFile, allowQueryParams, locationRef, navigateTo]);
+  }, [rootPath, sceneFile, auxiliaryData, allowQueryParams, locationRef, navigateTo]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   // OPTIONAL: Add custom loading div over the root div and disable the default loading screen

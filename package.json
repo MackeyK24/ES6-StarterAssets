@@ -18,8 +18,8 @@
     "@babylonjs/loaders": "^8.36.1",
     "@babylonjs/materials": "^8.36.1",
     "@babylonjs/inspector": "^8.36.1",
-    "@babylonjs-toolkit/next": "8.36.1000",
-    "@babylonjs-toolkit/dlc": "8.36.1000",
+    "@babylonjs-toolkit/next": "8.36.1001",
+    "@babylonjs-toolkit/dlc": "8.36.1001",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.9.4"
