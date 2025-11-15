@@ -53,27 +53,6 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       let defaultPageUrl: URL = new URL(window.location.href.replace("#?", "?"));
       let babylonRootPath: string = rootPath || "/scenes/";
       let babylonSceneFile: string = sceneFile || "samplescene.gltf";
-      if ((babylonRootPath != null && babylonRootPath !== "" && babylonRootPath.toLowerCase() === "_blank") || (babylonSceneFile != null && babylonSceneFile !== "" && babylonSceneFile.toLowerCase() === "_blank")) {
-          GameManager.EventBus.PostMessage("OnSceneReady", { rootPath: babylonRootPath, sceneFile: babylonSceneFile });
-          SceneManager.HideLoadingScreen(scene.getEngine());
-          SceneManager.FocusRenderCanvas(scene);
-          return; // Note: Bail Out Early
-      }
-      if ((babylonRootPath != null && babylonRootPath !== "" && babylonRootPath.toLowerCase() === "_controller" && babylonSceneFile != null && babylonSceneFile !== "")) {
-          let ScriptComponentName: string = babylonSceneFile;
-          const ScriptComponentClass = Utilities.InstantiateClass(ScriptComponentName);
-          if (ScriptComponentClass != null) {
-            const sceneController = new TransformNode("SceneController", scene);
-            const scriptComponent: ScriptComponent = new ScriptComponentClass(sceneController, scene, {}, babylonSceneFile);
-            if (scriptComponent == null) Tools.Warn("Failed to instantiate script class: " + ScriptComponentName);
-          } else {
-              Tools.Warn("Failed to locate script class: " + ScriptComponentName);
-          }
-          GameManager.EventBus.PostMessage("OnSceneReady", { rootPath: babylonRootPath, sceneFile: babylonSceneFile });
-          SceneManager.HideLoadingScreen(scene.getEngine());
-          SceneManager.FocusRenderCanvas(scene);
-          return; // Note: Bail Out Early
-      }
       if (allowQueryParams === true) {
         babylonRootPath = locationRef?.state?.rootPath || babylonRootPath;
         babylonSceneFile = locationRef?.state?.sceneFile || babylonSceneFile;
@@ -81,6 +60,12 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
           babylonRootPath = defaultPageUrl.searchParams.get("root") || babylonRootPath;
           babylonSceneFile = defaultPageUrl.searchParams.get("scene") || babylonSceneFile;
         }
+      }
+      if ((babylonRootPath != null && babylonRootPath !== "" && babylonRootPath.toLowerCase() === "_blank") || (babylonSceneFile != null && babylonSceneFile !== "" && babylonSceneFile.toLowerCase() === "_blank")) {
+          GameManager.EventBus.PostMessage("OnSceneReady", { rootPath: babylonRootPath, sceneFile: babylonSceneFile });
+          SceneManager.HideLoadingScreen(scene.getEngine());
+          SceneManager.FocusRenderCanvas(scene);
+          return; // Note: Bail Out Early
       }
       assetsManager = new AssetsManager(scene);
       assetsManager.addMeshTask("BabylonScene", null, babylonRootPath, babylonSceneFile);
