@@ -12,7 +12,7 @@ import { useLocation, useNavigate, NavigateFunction, Location } from "react-rout
 import BaseSceneViewer from "./viewer.tsx";
 import CustomOverlay from "../custom/overlay.tsx";
 import GameManager from "../globals.ts";
-import "./css";
+import "./babylon.css";
 
 export declare type SceneViewerProps = {
   rootPath?: string;

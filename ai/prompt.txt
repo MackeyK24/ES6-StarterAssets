@@ -37,7 +37,8 @@ scene files with extra UnityGLTF metadata to instantiate **Babylon Toolkit Scrip
 
 # React Component Framework
 
-The **Babylon Toolkit React Framework** will be installed that actually renders the interactive scene as a route:
+The **Babylon Toolkit React Framework** will be installed that actually renders the interactive scene as a route. The framework already includes the
+`ApplicationRoute` and `BabylonSceneViewer` react components:
 ```
 function App() {
   return (
