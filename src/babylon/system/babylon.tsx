@@ -91,7 +91,9 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       console.error("Failed to load babylon scene assets", error);
     } finally {
       assetsManager = null;
-      if (disposeObserver) scene.onDisposeObservable.remove(disposeObserver);
+      if (!disposed && !scene.isDisposed && disposeObserver) {
+        scene.onDisposeObservable.remove(disposeObserver);
+      }
     }
   }, [rootPath, sceneFile, auxiliaryData, allowQueryParams, locationRef, navigateTo]);
 
