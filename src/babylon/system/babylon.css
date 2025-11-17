@@ -8,6 +8,8 @@
   padding: 0;
   z-index: 0;
   overflow: hidden;
+  color: #E0684B; /* Default Babylon Toolkit Soft Orange */
+  background-color: #2A2342; /* Default Babylon Toolkit Base Purple */
   contain: layout style paint; /* Isolates layout, style, and paint for better performance */
   isolation: isolate; /* Creates a new stacking context to reduce compositing overhead */
 }
