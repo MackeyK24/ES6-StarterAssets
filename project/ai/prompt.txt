@@ -45,7 +45,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/babylon" element={
+        <Route path="/play" element={
           <ApplicationRoute allowDevMode={true}>
             <BabylonSceneViewer rootPath="/scenes/" sceneFile="mainmenu.gltf" allowQueryParams={true} enableCustomOverlay={false} />
           </ApplicationRoute>} />
@@ -57,12 +57,12 @@ function App() {
 
 React router navigation can be used to load scenes from **anywhere**:
 ```
-navigate("/babylon", { state: { fromApp: true, rootPath: "/scenes/", sceneFile: "levelone.gltf" } });
+navigate("/play", { state: { fromApp: true, rootPath: "/scenes/", sceneFile: "levelone.gltf" } });
 ```
 
 or load a blank scene at runtime and handle creation in code:
 ```
-navigate("/babylon", { state: { fromApp: true, sceneFile: "_blank", auxiliaryData: "anything" } });
+navigate("/play", { state: { fromApp: true, sceneFile: "_blank", auxiliaryData: "anything" } });
 ```
 
 

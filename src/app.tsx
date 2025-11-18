@@ -23,7 +23,7 @@ function Home() {
       </div>
       <h1>Vite + React + BabylonJS</h1>
       <div className="card">
-        <button onClick={() => navigate("/babylon", { state: { fromApp: true, rootPath: "/scenes/", sceneFile: "samplescene.gltf" } })}>Sample Scene</button>
+        <button onClick={() => navigate("/play", { state: { fromApp: true, rootPath: "/scenes/", sceneFile: "samplescene.gltf" } })}>Sample Scene</button>
       </div>
       <p className="read-the-docs">
         Click on the Vite or React or BabylonJS logos to learn more
@@ -40,7 +40,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/babylon" element={
+        <Route path="/play" element={
           <ApplicationRoute allowDevMode={true}>
             <BabylonSceneViewer rootPath="/scenes/" sceneFile="samplescene.gltf" allowQueryParams={true} enableCustomOverlay={false} />
           </ApplicationRoute>} />

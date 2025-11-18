@@ -24,7 +24,7 @@ export declare type SceneViewerProps = {
 
 /**
  * ES6 Interactive Babylon Toolkit Scene Viewer (GLTF)
- * Example: navigate('/babylon', { state: { fromApp: true, rootPath: '/scenes/', sceneFile: 'sampleScene.gltf', auxiliaryData: null } });
+ * Example: navigate('/play', { state: { fromApp: true, rootPath: '/scenes/', sceneFile: 'sampleScene.gltf', auxiliaryData: null } });
  * @param fromApp navigation flag
  * @param rootPath scene location
  * @param sceneFile scene filename

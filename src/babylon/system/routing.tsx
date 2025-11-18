@@ -11,7 +11,7 @@ interface ApplicationRouteProps {
  * To properly access application routes, the user must navigate from within the app.
  * If they try to access it directly (e.g., via browser URL), they will be redirected.
  * The navigation within the app should set location state { fromApp: true }.
- * Example: navigate('/babylon', { state: { fromApp: true } });
+ * Example: navigate('/play', { state: { fromApp: true } });
  */
 
 export default function ApplicationRoute({ children, redirectTo = '/', allowDevMode = false }: ApplicationRouteProps) {
