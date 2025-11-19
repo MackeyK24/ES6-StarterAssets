@@ -69,7 +69,7 @@ navigate("/play", { state: { fromApp: true, sceneFile: "_blank", auxiliaryData: 
 # Important Project Create Notes
 
 You must create a comprehensive web application with **ALL** the required user interfaces using VITE, REACT and TYPESCRIPT.
-The app should use the specified **HTML UI Template** or default to Material UI if not specified.
+The app should use the specified **HTML UI Template** or default to Tailwind CSS if not specified.
 The app should have a `Main Menu` home page type feel and support for user presence and login.
 The app should have some FILLER gaming content like `User Achievements` and `Leaderboards`.
 
