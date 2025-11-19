@@ -10,6 +10,9 @@ import { Engine } from "@babylonjs/core/Engines/engine";
 import { Scene } from "@babylonjs/core/scene";
 import { SceneManager } from "@babylonjs-toolkit/next";
 
+// Note: Ensure loading screen is included in base viewer
+import "@babylonjs/core/Loading/loadingScreen";
+
 export declare type BabylonjsProps = {
   webgpu?: boolean;
   antialias?: boolean;
