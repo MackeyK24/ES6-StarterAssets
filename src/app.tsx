@@ -42,7 +42,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/play" element={
           <ApplicationRoute allowDevMode={true}>
-            <BabylonSceneViewer rootPath="/scenes/" sceneFile="mainmenu.gltf" allowQueryParams={true} enableCustomOverlay={false} />
+            <BabylonSceneViewer fullPage={true} rootPath="/scenes/" sceneFile="mainmenu.gltf" allowQueryParams={true} enableCustomOverlay={false} />
           </ApplicationRoute>} />
       </Routes>
     </BrowserRouter>
