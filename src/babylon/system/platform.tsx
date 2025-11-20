@@ -1,5 +1,14 @@
 'use client';
 
+/*
+ * =================================================================
+ * ES6 React Framework Platform Services
+ * =================================================================
+ * Unified navigation hook for React Router
+ * This is the default implementation for React applications
+ * =================================================================
+ */
+
 import { useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 

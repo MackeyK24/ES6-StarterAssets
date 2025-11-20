@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from "react";
-import { useUnifiedNavigation } from "./navigate";
+import { useUnifiedNavigation } from "./platform";
 
 interface ApplicationRouteProps {
   children: React.ReactNode;
@@ -19,7 +19,7 @@ interface ApplicationRouteProps {
 export default function ApplicationRoute({ children, redirectTo = '/', allowDevMode = false }: ApplicationRouteProps) {
   const { navigate, location } = useUnifiedNavigation();
   const allowByState: boolean = Boolean(location.state?.fromApp);
-  const isDevelopment: boolean = (import.meta.env.DEV === true);
+  const isDevelopment: boolean = process.env.NODE_ENV === "development";
   const isRouteAllowed: boolean = allowByState || (allowDevMode && isDevelopment);
 
   useEffect(() => {

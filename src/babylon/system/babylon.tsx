@@ -10,7 +10,7 @@ import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { SceneManager, ScriptComponent, Utilities } from "@babylonjs-toolkit/next";
 import { useCallback } from "react";
-import { useUnifiedNavigation, UnifiedNavigateFunction, LocationState } from "./navigate";
+import { useUnifiedNavigation, UnifiedNavigateFunction, LocationState } from "./platform";
 import BaseSceneViewer from "./viewer";
 import CustomOverlay from "../custom/overlay";
 import GameManager from "../globals";
@@ -52,7 +52,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
       // STEP 2 - Load the babylon scene assets (GLTF) using the toolkit assets manager
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
-      let isDevelopment: boolean = (import.meta.env.DEV === true);
+      let isDevelopment: boolean = process.env.NODE_ENV === "development";
       let defaultPageUrl: URL = new URL(window.location.href.replace("#?", "?"));
       let babylonRootPath: string = rootPath || "/scenes/";
       let babylonSceneFile: string = sceneFile || "samplescene.gltf";
