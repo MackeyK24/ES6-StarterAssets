@@ -1,3 +1,5 @@
+'use client';
+
 import { Scene } from "@babylonjs/core/scene";
 import { Tools } from "@babylonjs/core/Misc/tools";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
@@ -8,10 +10,10 @@ import { AssetsManager } from "@babylonjs/core/Misc/assetsManager";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import { SceneManager, ScriptComponent, Utilities } from "@babylonjs-toolkit/next";
 import { useCallback } from "react";
-import { useLocation, useNavigate, NavigateFunction, Location } from "react-router-dom";
-import BaseSceneViewer from "./viewer.tsx";
-import CustomOverlay from "../custom/overlay.tsx";
-import GameManager from "../globals.ts";
+import { useUnifiedNavigation, UnifiedNavigateFunction, LocationState } from "./navigate";
+import BaseSceneViewer from "./viewer";
+import CustomOverlay from "../custom/overlay";
+import GameManager from "../globals";
 import "./babylon.css";
 
 export declare type SceneViewerProps = {
@@ -33,8 +35,7 @@ export declare type SceneViewerProps = {
 
 function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes<HTMLCanvasElement>) {
   const { rootPath, sceneFile, auxiliaryData, allowQueryParams, enableCustomOverlay } = props;
-  const locationRef:Location = useLocation();
-  const navigateTo: NavigateFunction = useNavigate();
+  const { navigate, location } = useUnifiedNavigation();
   const createScene = useCallback(async (scene:Scene) => {
     if (scene.isDisposed) return; // Note: Strict mode safety
     let disposed = false;
@@ -45,7 +46,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
     // STEP 1 - Initialize the global runtime scene properties and react navigation system
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     try {
-      await GameManager.InitializeRuntime(scene, navigateTo, true, true, false);
+      await GameManager.InitializeRuntime(scene, navigate, true, true, false);
       if (disposed || scene.isDisposed) return; // Note: Strict mode safety
     
       ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,9 +58,9 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
       let babylonSceneFile: string = sceneFile || "samplescene.gltf";
       let babylonAuxiliaryData:string = auxiliaryData || null;
       if (allowQueryParams === true) {
-        babylonRootPath = locationRef?.state?.rootPath || babylonRootPath;
-        babylonSceneFile = locationRef?.state?.sceneFile || babylonSceneFile;
-        babylonAuxiliaryData = locationRef?.state?.auxiliaryData || babylonAuxiliaryData;
+        babylonRootPath = location?.state?.rootPath || babylonRootPath;
+        babylonSceneFile = location?.state?.sceneFile || babylonSceneFile;
+        babylonAuxiliaryData = location?.state?.auxiliaryData || babylonAuxiliaryData;
         if (isDevelopment === true) {
           babylonRootPath = defaultPageUrl.searchParams.get("root") || babylonRootPath;
           babylonSceneFile = defaultPageUrl.searchParams.get("scene") || babylonSceneFile;
@@ -95,7 +96,7 @@ function BabylonSceneViewer(props: SceneViewerProps & React.CanvasHTMLAttributes
         scene.onDisposeObservable.remove(disposeObserver);
       }
     }
-  }, [rootPath, sceneFile, auxiliaryData, allowQueryParams, locationRef, navigateTo]);
+  }, [rootPath, sceneFile, auxiliaryData, allowQueryParams, location, navigate]);
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
   // OPTIONAL: Add custom loading div over the root div and disable the default loading screen

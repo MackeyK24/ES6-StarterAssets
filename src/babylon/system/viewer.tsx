@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef } from "react";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { Nullable } from "@babylonjs/core/types";

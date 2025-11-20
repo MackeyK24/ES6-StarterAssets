@@ -1,3 +1,5 @@
+'use client';
+
 import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
@@ -81,7 +83,7 @@ class GameManager {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Synchronous Message Bus
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static _SynchronousMessageBus: LocalMessageBus = null;
+    private static _SynchronousMessageBus: LocalMessageBus | null = null;
     /** Synchronous event message bus 
      * @examples 
      * // Handle myevent message
