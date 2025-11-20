@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "npm run build && npm run preview",
+    "kill-port": "npx kill-port 8080",
     "deploy-all": "npm run build && node aws/deploy.js"
   },
   "dependencies": {
