@@ -13,8 +13,8 @@
     "deploy-all": "npm run build && node aws/deploy.js"
   },
   "dependencies": {
-    "@babylonjs-toolkit/dlc": "9.0.0",
-    "@babylonjs-toolkit/next": "9.0.0",
+    "@babylonjs-toolkit/dlc": "9.0.1",
+    "@babylonjs-toolkit/next": "9.0.1",
     "@babylonjs/core": "^9.0.0",
     "@babylonjs/gui": "^9.0.0",
     "@babylonjs/havok": "^1.3.10",
