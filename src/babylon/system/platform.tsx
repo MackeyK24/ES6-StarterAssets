@@ -4,22 +4,22 @@
  * =================================================================
  * ES6 React Framework Platform Services
  * =================================================================
- * Unified navigation hook for React Router
- * This is the default implementation for React applications
+ * Cross-platform navigation via React Context injection (A2).
+ *
+ * The babylon/ folder is router-agnostic. Host apps provide an
+ * adapter that wraps their router's hooks and supplies the value
+ * to <NavigationProvider>. Works with react-router-dom,
+ * @tanstack/react-router, next/navigation, etc.
  * =================================================================
  */
 
-import { useCallback, useMemo } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { createContext, createElement, useContext, ReactNode } from "react";
 
 // Type definitions for unified navigation
 export type NavigationState = {
   fromApp?: boolean;
-  gameMode?: string;
   rootPath?: string;
   sceneFile?: string;
-  assetFiles?: string[];
-  importMeshes?: string[];
   auxiliaryData?: string;
   [key: string]: any;
 };
@@ -32,35 +32,34 @@ export type LocationState = {
 
 export type UnifiedNavigateFunction = (path: string, options?: { state?: NavigationState; replace?: boolean }) => void;
 
-/**
- * Unified navigation hook for React Router
- * This is the default implementation for React applications
- * For Next.js support, create a separate implementation file
- */
-export function useUnifiedNavigation(): {
+export type UnifiedNavigation = {
   navigate: UnifiedNavigateFunction;
   location: LocationState;
-} {
-  const reactNavigate = useNavigate();
-  const reactLocation = useLocation();
+};
 
-  const navigate: UnifiedNavigateFunction = useCallback((path: string, options?: { state?: NavigationState; replace?: boolean }) => {
-    reactNavigate(path, { state: options?.state, replace: options?.replace });
-  }, [reactNavigate]);
+const NavigationContext = createContext<UnifiedNavigation | null>(null);
 
-  const location: LocationState = useMemo(() => ({
-    pathname: reactLocation.pathname,
-    search: reactLocation.search,
-    state: reactLocation.state as NavigationState | undefined
-  }), [reactLocation]);
-
-  return { navigate, location };
+/**
+ * Host apps wrap their tree with <NavigationProvider value={...}>.
+ * The value is supplied by a tiny per-host adapter that bridges the
+ * host router (react-router-dom, @tanstack/react-router, next, ...)
+ * to the UnifiedNavigation shape.
+ */
+export function NavigationProvider({ value, children }: { value: UnifiedNavigation; children?: ReactNode }) {
+  return createElement(NavigationContext.Provider, { value }, children);
 }
 
 /**
- * Hook for React Router - use this in React apps
- * This is an alias for useUnifiedNavigation for explicit usage
+ * Consumer hook used everywhere inside babylon/.
+ * Throws if no <NavigationProvider> is mounted above.
  */
-export function useReactRouterNavigation() {
-  return useUnifiedNavigation();
+export function useUnifiedNavigation(): UnifiedNavigation {
+  const ctx = useContext(NavigationContext);
+  if (!ctx) {
+    throw new Error(
+      "useUnifiedNavigation: missing <NavigationProvider>. " +
+      "Wrap your app with a host-specific navigation adapter."
+    );
+  }
+  return ctx;
 }

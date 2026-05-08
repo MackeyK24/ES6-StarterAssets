@@ -40,25 +40,6 @@ function SplashScreen() {
             zIndex: 1,
           }}
         />
-
-        <div
-          id="xbabylonjsStatusTextDiv"
-          style={{
-            position: "absolute",
-            right: "18px",
-            bottom: "12px",
-            fontFamily: "Arial",
-            fontSize: "14px",
-            color: "white",
-            textAlign: "right",
-            zIndex: 2,
-            opacity: 0.9,
-            letterSpacing: "0.3px",
-          }}
-        >
-         Loading...
-        </div>
-
         <img
           id="xbabylonjsLoadingImage"
           src={logoSrc}
@@ -73,7 +54,6 @@ function SplashScreen() {
             position: "absolute",
           }}
         />
-
         <div
           style={{
             width: "320px",
@@ -100,8 +80,24 @@ function SplashScreen() {
             }}
           />
         </div>
+        <div
+          id="splash-screen-status-div"
+          style={{
+            position: "absolute",
+            right: "18px",
+            bottom: "12px",
+            fontFamily: "Arial",
+            fontSize: "14px",
+            color: "white",
+            textAlign: "right",
+            zIndex: 2,
+            opacity: 0.9,
+            letterSpacing: "0.3px",
+          }}
+        >
+         Loading...
+        </div>
       </div>
-
     </div>
   )
 }

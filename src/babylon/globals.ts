@@ -9,8 +9,7 @@ import { SceneManager, LocalMessageBus } from "@babylonjs-toolkit/next";
 
 // Preload Game Mode Side Effects
 import "./classes/DefaultGameMode"; 
-import "./classes/DemoOneGameMode"; 
-import "./classes/DemoTwoGameMode"; 
+import "./classes/DemoGameMode"; 
 
 class GameManager {
     /** Initialize the game runtime environment */
@@ -88,7 +87,7 @@ class GameManager {
     public static UpdateSplashScreenStatus(message: string): void {
         const splash = document.getElementById("splash-screen");
         if (splash) {
-            const statusText = splash.querySelector("#xbabylonjsStatusTextDiv");
+            const statusText = splash.querySelector("#splash-screen-status-div");
             if (statusText) statusText.textContent = message;
         }
     }

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, NavigateFunction, useNavigate } from "rea
 import { SceneManager, ScriptComponent, Utilities } from "@babylonjs-toolkit/next";
 import BabylonSceneViewer from "./babylon/system/babylon";
 import ApplicationRoute from "./babylon/system/routing";
+import { ReactRouterNavAdapter } from "./router";
 import babylonLogo from './assets/babylon.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -24,9 +25,7 @@ function Home() {
       </div>
       <h1>Vite + React + BabylonJS</h1>
       <div className="card">
-        <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "DemoOneGameMode", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo One</button>
-        &nbsp;&nbsp;
-        <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "DemoTwoGameMode", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo Two</button>
+        <button onClick={() => navigate("/play", { state: { fromApp: true, rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf" } })}>Play Demo</button>
       </div>
       <p className="read-the-docs">
         Click on the Vite or React or BabylonJS logos to learn more
@@ -41,13 +40,15 @@ function Home() {
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/play" element={
-          <ApplicationRoute allowDevMode={true}>
-            <BabylonSceneViewer fullPage={true} rootPath="/scenes/" sceneFile="mainmenu.gltf" allowQueryParams={true} enableCustomOverlay={false} />
-          </ApplicationRoute>} />
-      </Routes>
+      <ReactRouterNavAdapter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/play" element={
+            <ApplicationRoute allowDevMode={true}>
+              <BabylonSceneViewer fullPage={true} rootPath="/scenes/" sceneFile="mainmenu.gltf" allowQueryParams={true} enableCustomOverlay={false} />
+            </ApplicationRoute>} />
+        </Routes>
+      </ReactRouterNavAdapter>
     </BrowserRouter>
   )
 }
