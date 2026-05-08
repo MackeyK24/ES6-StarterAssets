@@ -7,11 +7,6 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './app.css'
 
-// Preload Runtime Side Effects
-import "./babylon/classes/DefaultGameMode"; 
-import "./babylon/classes/DemoOneGameMode"; 
-import "./babylon/classes/DemoTwoGameMode"; 
-
 function Home() {
   const navigate: NavigateFunction = useNavigate();
   return (
