@@ -15,8 +15,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 // Type definitions for unified navigation
 export type NavigationState = {
   fromApp?: boolean;
+  gameMode?: string;
   rootPath?: string;
   sceneFile?: string;
+  assetFiles?: string[];
+  importMeshes?: string[];
   auxiliaryData?: string;
   [key: string]: any;
 };

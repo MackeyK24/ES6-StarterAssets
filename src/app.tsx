@@ -1,10 +1,16 @@
 import { BrowserRouter, Routes, Route, NavigateFunction, useNavigate } from "react-router-dom";
+import { SceneManager, ScriptComponent, Utilities } from "@babylonjs-toolkit/next";
 import BabylonSceneViewer from "./babylon/system/babylon";
 import ApplicationRoute from "./babylon/system/routing";
 import babylonLogo from './assets/babylon.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './app.css'
+
+// Preload Runtime Side Effects
+import "./babylon/classes/DefaultGameMode"; 
+import "./babylon/classes/DemoOneGameMode"; 
+import "./babylon/classes/DemoTwoGameMode"; 
 
 function Home() {
   const navigate: NavigateFunction = useNavigate();
@@ -23,7 +29,9 @@ function Home() {
       </div>
       <h1>Vite + React + BabylonJS</h1>
       <div className="card">
-        <button onClick={() => navigate("/play", { state: { fromApp: true, rootPath: "/scenes/", sceneFile: "samplescene.gltf" } })}>Play Demo</button>
+        <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "DemoOneGameMode", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo One</button>
+        &nbsp;&nbsp;
+        <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "DemoTwoGameMode", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo Two</button>
       </div>
       <p className="read-the-docs">
         Click on the Vite or React or BabylonJS logos to learn more
