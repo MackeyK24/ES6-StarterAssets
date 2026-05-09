@@ -25,7 +25,7 @@ function Home() {
       </div>
       <h1>Vite + React + BabylonJS</h1>
       <div className="card">
-        <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "DemoGameMode", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo</button>
+        <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "PlayerControllerDemo", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo</button>
       </div>
       <p className="read-the-docs">
         Click on the Vite or React or BabylonJS logos to learn more
