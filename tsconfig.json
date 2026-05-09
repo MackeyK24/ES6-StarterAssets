@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "types": ["node"],    
     "skipLibCheck": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
