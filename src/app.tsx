@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { BrowserRouter, Routes, Route, NavigateFunction, useNavigate } from "react-router-dom";
 import { SceneManager, ScriptComponent, Utilities } from "@babylonjs-toolkit/next";
 import BabylonSceneViewer from "./babylon/system/babylon";
@@ -11,30 +10,25 @@ import heroImg from './assets/hero.png'
 import './app.css'
 
 function Home() {
-  const [count, setCount] = useState(0)
   const navigate: NavigateFunction = useNavigate();
 
   return (
-    <div id="home">
+    <div id="vite">
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
           <img src={reactLogo} className="framework" alt="React logo" />
           <img src={viteLogo} className="vite" alt="Vite logo" />
+          <div>
+            <a href="https://babylonjs.com" target="_blank">
+              <img src={babylonLogo} className="logo babylon" alt="Babylon logo" />
+            </a>
+          </div>
         </div>
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
+          <h1>React + Vite + BabylonJS</h1>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+        <button type="button" className="counter" onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "PlayerControllerDemo", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo</button>
       </section>
 
       <div className="ticks"></div>
@@ -48,6 +42,12 @@ function Home() {
           <p>Your questions, answered</p>
           <ul>
             <li>
+              <a href="https://github.com/codewrxai/agent-persona/blob/master/babylon-toolkit/react-framework.md" target="_blank">
+                <img className="logo" src={babylonLogo} alt="" />
+                Babylon Toolkit
+              </a>
+            </li>
+            <li>
               <a href="https://vite.dev/" target="_blank">
                 <img className="logo" src={viteLogo} alt="" />
                 Explore Vite
@@ -56,7 +56,7 @@ function Home() {
             <li>
               <a href="https://react.dev/" target="_blank">
                 <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
+                Learn More
               </a>
             </li>
           </ul>
@@ -122,38 +122,12 @@ function Home() {
 
       <div className="ticks"></div>
       <section id="spacer"></section>
+      <div>
+        <small><a href="https://www.babylontoolkit.com" target="_blank">Babylon Toolkit Game Development</a></small>
+      </div>
     </div>
   )
 }
-
-// function Home() {
-//   const navigate: NavigateFunction = useNavigate();
-//   return (
-//     <div id="vite">
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//         <a href="https://babylonjs.com" target="_blank">
-//           <img src={babylonLogo} className="logo babylon" alt="Babylon logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React + BabylonJS</h1>
-//       <div className="card">
-//         <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "PlayerControllerDemo", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo</button>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite or React or BabylonJS logos to learn more
-//       </p>
-//       <p>
-//        <small><a href="https://www.babylontoolkit.com" target="_blank">Babylon Toolkit Game Development</a></small>
-//       </p>
-//     </div>
-//   )
-// }
 
 function App() {
   return (
