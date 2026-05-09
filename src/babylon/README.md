@@ -113,3 +113,83 @@ export function ReactRouterNavAdapter({ children }: { children: ReactNode }) {
   return createElement(NavigationProvider, { value }, children);
 }
 ```
+
+# Lovable TanStack Platform Adapter
+
+src/routes/__root.tsx
+```
+import { TanStackNavAdapter } from "../router";
+// ...
+component: () => (
+  <TanStackNavAdapter>
+    <Outlet />
+  </TanStackNavAdapter>
+),
+```
+
+src/router.tsx
+```
+'use client';
+
+/*
+ * =================================================================
+ * Host Navigation Adapter - TanStack Router (Lovable default)
+ * =================================================================
+ * Bridges @tanstack/react-router hooks into the babylon toolkit's
+ * UnifiedNavigation context.
+ * =================================================================
+ */
+
+import { createElement, ReactNode, useCallback, useMemo } from "react";
+import { useNavigate, useLocation, useRouter } from "@tanstack/react-router";
+import {
+  NavigationProvider,
+  UnifiedNavigateFunction,
+  LocationState,
+  NavigationState,
+} from "../babylon/system/platform";
+
+export function TanStackNavAdapter({ children }: { children: ReactNode }) {
+  const tsNavigate = useNavigate();
+  const tsLocation = useLocation();
+  const router = useRouter();
+
+  const navigate: UnifiedNavigateFunction = useCallback(
+    (path, options) => {
+      // TanStack Router has no first-class history `state`; stash it on
+      // window.history.state via the router's history API after navigation.
+      const doNav = options?.replace
+        ? tsNavigate({ to: path, replace: true })
+        : tsNavigate({ to: path });
+
+      Promise.resolve(doNav).then(() => {
+        if (options?.state && typeof window !== "undefined") {
+          const current = window.history.state ?? {};
+          window.history.replaceState(
+            { ...current, usr: options.state },
+            "",
+            window.location.href
+          );
+        }
+      });
+    },
+    [tsNavigate]
+  );
+
+  const location: LocationState = useMemo(() => {
+    const histState =
+      typeof window !== "undefined"
+        ? (window.history.state?.usr as NavigationState | undefined)
+        : undefined;
+    return {
+      pathname: tsLocation.pathname,
+      search: tsLocation.searchStr ?? "",
+      state: histState,
+    };
+  }, [tsLocation]);
+
+  const value = useMemo(() => ({ navigate, location }), [navigate, location]);
+
+  return createElement(NavigationProvider, { value }, children);
+}
+```
