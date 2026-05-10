@@ -14,6 +14,7 @@ import babylonLogo from './assets/babylon.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './app.css'
+import GameManager from "./babylon/globals";
 
 function Home() {
   const navigate: NavigateFunction = useNavigate();
@@ -32,7 +33,7 @@ function Home() {
       </div>
       <h1>Vite + React + BabylonJS</h1>
       <div className="card">
-        <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "DemoGameMode", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo</button>
+        <button onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "DemoGameMode", rootPath: GameManager.AwsPlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo</button>
       </div>
       <p className="read-the-docs">
         Click on the Vite or React or BabylonJS logos to learn more

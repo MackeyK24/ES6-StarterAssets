@@ -8,6 +8,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './app.css'
+import GameManager from "./babylon/globals";
 
 function Home() {
   const navigate: NavigateFunction = useNavigate();
@@ -28,7 +29,7 @@ function Home() {
         <div>
           <h1>React + Vite + BabylonJS</h1>
         </div>
-        <button type="button" className="counter" onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "PlayerControllerDemo", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"], hideSplashScreen: true } })}>Play Demo</button>
+        <button type="button" className="counter" onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "PlayerControllerDemo", rootPath: GameManager.AwsPlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"], hideSplashScreen: true } })}>Play Demo</button>
       </section>
 
       <div className="ticks"></div>
