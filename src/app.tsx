@@ -28,7 +28,7 @@ function Home() {
         <div>
           <h1>React + Vite + BabylonJS</h1>
         </div>
-        <button type="button" className="counter" onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "PlayerControllerDemo", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo</button>
+        <button type="button" className="counter" onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "PlayerControllerDemo", rootPath: SceneManager.PlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"], hideSplashScreen: true } })}>Play Demo</button>
       </section>
 
       <div className="ticks"></div>
