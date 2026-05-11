@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, NavigateFunction, useNavigate } from "react-router-dom";
 import { SceneManager, ScriptComponent, Utilities } from "@babylonjs-toolkit/next";
 import BabylonSceneViewer from "./babylon/system/babylon";
-import ApplicationRoute from "./babylon/system/routing";
-import { ReactRouterNavAdapter } from "./router";
+import ApplicationRoute from "./routing/router";
+import { ReactRouterNavAdapter } from "./routing/adpter";
 import babylonLogo from './assets/babylon.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'

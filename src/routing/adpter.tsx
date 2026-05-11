@@ -17,7 +17,7 @@ import {
   UnifiedNavigateFunction,
   LocationState,
   NavigationState,
-} from "./babylon/system/platform";
+} from "../babylon/system/platform";
 
 export function ReactRouterNavAdapter({ children }: { children: ReactNode }) {
   const rrNavigate = useNavigate();
