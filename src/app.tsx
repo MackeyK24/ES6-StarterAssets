@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, NavigateFunction, useNavigate } from "react-router-dom";
 import { SceneManager, ScriptComponent, Utilities } from "@babylonjs-toolkit/next";
 import BabylonSceneViewer from "./babylon/system/babylon";
-import ApplicationRoute from "./routing/router";
+import ApplicationRoute from "./babylon/system/routing";
 import { ReactRouterNavAdapter } from "./routing/adpter";
 import babylonLogo from './assets/babylon.png'
 import reactLogo from './assets/react.svg'
@@ -29,7 +29,7 @@ function Home() {
         <div>
           <h1>React + Vite + BabylonJS</h1>
         </div>
-        <button type="button" className="counter" onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "PlayerControllerDemo", rootPath: GameManager.AwsPlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"], hideSplashScreen: true } })}>Play Demo</button>
+        <button type="button" className="counter" onClick={() => navigate("/play", { state: { fromApp: true, gameMode: "DemoGameMode", rootPath: GameManager.AwsPlaygroundRepo, sceneFile: "samplescene.gltf", importMeshes: ["playerarmature.gltf"] } })}>Play Demo</button>
       </section>
 
       <div className="ticks"></div>
