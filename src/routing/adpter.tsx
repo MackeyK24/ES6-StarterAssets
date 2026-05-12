@@ -31,9 +31,9 @@ export function ReactRouterNavAdapter({ children }: { children: ReactNode }) {
     [rrNavigate]
   );
 
-  // Register the navigation hook globally so GameManager.NavigateTo works on
-  // every page (Home, etc.), even before the Babylon runtime has initialized.
-  // Note: Since ReactRouterNavAdapter wraps your whole app (inside BrowserRouter) and already owns the navigate function. Then it's set once, app-wide, before any page renders.
+  // Note: Register the navigation hook globally so GameManager.NavigateTo works on
+  // every page, even before the Babylon runtime has initialized. ReactRouterNavAdapter
+  // wraps the whole app (inside BrowserRouter) and already owns the navigate function.
   useEffect(() => {
     GameManager.SetReactNavigationHook(navigate);
     return () => GameManager.DeleteReactNavigationHook();
