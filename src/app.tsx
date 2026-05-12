@@ -144,7 +144,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/play" element={
             <ApplicationRoute allowDevMode={true}>
-              <BabylonSceneViewer fullPage={true} sceneUrl="/scenes/mainmenu.gltf" allowQueryParams={true} enableCustomOverlay={false} />
+              <BabylonSceneViewer fullPage={true} allowQueryParams={true} enableCustomOverlay={false} />
             </ApplicationRoute>} />
         </Routes>
       </ReactRouterNavAdapter>
