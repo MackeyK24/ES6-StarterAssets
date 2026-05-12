@@ -10,7 +10,7 @@
  * =================================================================
  */
 
-import { createElement, ReactNode, useCallback, useMemo } from "react";
+import { createElement, ReactNode, useCallback, useEffect, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   NavigationProvider,
@@ -18,6 +18,7 @@ import {
   LocationState,
   NavigationState,
 } from "../babylon/system/platform";
+import GameManager from "../babylon/globals";
 
 export function ReactRouterNavAdapter({ children }: { children: ReactNode }) {
   const rrNavigate = useNavigate();
@@ -29,6 +30,14 @@ export function ReactRouterNavAdapter({ children }: { children: ReactNode }) {
     },
     [rrNavigate]
   );
+
+  // Register the navigation hook globally so GameManager.NavigateTo works on
+  // every page (Home, etc.), even before the Babylon runtime has initialized.
+  // Note: Since ReactRouterNavAdapter wraps your whole app (inside BrowserRouter) and already owns the navigate function. Then it's set once, app-wide, before any page renders.
+  useEffect(() => {
+    GameManager.SetReactNavigationHook(navigate);
+    return () => GameManager.DeleteReactNavigationHook();
+  }, [navigate]);
 
   const location: LocationState = useMemo(
     () => ({
