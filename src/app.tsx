@@ -14,8 +14,7 @@ function Home() {
   const handlePlayDemo = () => {
     GameManager.NavigateTo("/play", {
       gameMode: "DemoGameMode",
-      rootPath: GameManager.AwsPlaygroundRepo,
-      sceneFile: "samplescene.gltf",
+      sceneUrl: GameManager.AwsPlaygroundRepo + "samplescene.gltf",
       importMeshes: ["playerarmature.gltf"]
     });
   };
