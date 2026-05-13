@@ -12,12 +12,7 @@
 
 import { createElement, ReactNode, useCallback, useEffect, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  NavigationProvider,
-  UnifiedNavigateFunction,
-  LocationState,
-  NavigationState,
-} from "../babylon/system/platform";
+import { NavigationProvider, UnifiedNavigateFunction, LocationState, NavigationState } from "../babylon/system/platform";
 import GameManager from "../babylon/globals";
 
 export function ReactRouterNavAdapter({ children }: { children: ReactNode }) {

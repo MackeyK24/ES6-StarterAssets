@@ -1,12 +1,12 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import babylonLogo from './assets/babylon.png'
+import { DefaultBabylonPreloader, babylonLogo } from './babylon/custom/loading';
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './app.css'
 
-// All Babylon imports stay inside this lazy chunk
+// Note: All babylon imports stay inside the PlayRoute lazy load chunk
 const PlayRoute = lazy(() => import('./routing/router'));
 
 function Home() {
@@ -147,7 +147,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/play" element={
-          <Suspense fallback={<div style={{ position: 'fixed', inset: 0, background: '#2A2342' }} />}>
+          <Suspense fallback={<DefaultBabylonPreloader />}>
             <PlayRoute />
           </Suspense>
         } />
