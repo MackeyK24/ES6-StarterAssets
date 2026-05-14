@@ -12,8 +12,14 @@ const PlayRoute = lazy(() => import('./routing/router'));
 function Home() {
   const navigate = useNavigate();
   const handlePlayDemo = () => {
-    // Note: Use Native Navigation API to prevent ANY BABYLON CODE from being included in the main bundle.
-    // This ensures that Babylon and all related dependencies are only loaded when the user clicks "Play Demo", optimizing initial load performance.
+    /* Use Native Navigation API to prevent ANY BABYLON CODE from being included in the main bundle.
+     * This ensures that Babylon and all related dependencies are only loaded when the user clicks "Play Demo", optimizing initial load performance.
+     * Game code should use game manager, for example:
+     * GameManager.NavigateTo("/play", {
+     *     gameMode: "DefaultGameMode",
+     *     sceneUrl: GameManager.PlaygroundRepo + "samplescene.gltf",
+     * });
+     */
     navigate('/play', {
       state: {
         fromApp: true,
