@@ -15,7 +15,13 @@ export default defineConfig(({ mode }) => ({
       output: {
         entryFileNames: "[name].js",
         assetFileNames: "[name].[ext]",
-        inlineDynamicImports: true, // Enables bundling all dynamic imports into a single [name].js file
+        inlineDynamicImports: false,
+        manualChunks(id) {
+          // IMPORTANT: Keep all Babylon code in one chunk to ensure the library files are correctly referenced 
+          if (id.includes("@babylonjs") || id.includes("@babylonjs-toolkit")) {
+            return "babylon";
+          }
+        },
       }
     }
   },
