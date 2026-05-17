@@ -35,14 +35,12 @@ export default defineConfig(({ mode }) => ({
     minifyWhitespace: mode === 'production',
   },
   optimizeDeps: {
-    exclude: mode === 'development' ? [
-      "@babylonjs/havok",
+    exclude: ["@babylonjs/havok"],
+    include: mode === 'development' ? [
       "@babylonjs/core",
       "@babylonjs/loaders",
       "@babylonjs/loaders/glTF",
-    ] : ["@babylonjs/havok"],
-    include: mode === 'development' ? [
-      "@babylonjs/gui", 
+      "@babylonjs/gui",
       "@babylonjs/materials",
       "@babylonjs/inspector",
       "@babylonjs-toolkit/dlc",
